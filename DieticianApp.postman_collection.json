@@ -1,0 +1,306 @@
+{
+	"info": {
+		"_postman_id": "16fbed61-67d2-4aaa-9919-ff7d1e3321ae",
+		"name": "DieticianApp",
+		"description": "Complete automated flow with Admin login, Dietician creation/login, Patient creation, Reports upload, and test cases.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46721553",
+		"_collection_link": "https://swathi-1951306.postman.co/workspace/Dietician-API-Team_4~316d8fac-965e-4c4f-9add-bcec3b6e7d77/collection/46721553-16fbed61-67d2-4aaa-9919-ff7d1e3321ae?action=share&source=collection_link&creator=46721553"
+	},
+	"item": [
+		{
+			"name": "NegativeTest_CreateDietician",
+			"item": [
+				{
+					"name": "CreateDietician_TC03-12",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Test\", function () {",
+									"    if (pm.response.code === 400) {",
+									"        try {",
+									"            const json = pm.response.json();",
+									"            let errorDetails = [];",
+									"            for (let key in json) {",
+									"                if (json.hasOwnProperty(key)) {",
+									"                    errorDetails.push(`${key}: ${json[key]}`);",
+									"                }",
+									"            }",
+									"            if (errorDetails.length > 0) {",
+									"                const message = errorDetails.join(' | ');",
+									"                console.log(\"Validation Errors: \" + message);",
+									"",
+									"                pm.test(\"Validation error: \" + message, function () {",
+									"                    pm.expect(errorDetails.length).to.be.greaterThan(0);",
+									"                });",
+									"            } else {",
+									"                console.warn(\"400 received but no error fields found\");",
+									"            }",
+									"        } catch (e) {",
+									"            console.error(\"Failed to print error response:\", e);",
+									"        }",
+									"    }",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const testType = pm.iterationData.get(\"type\");",
+									"",
+									"if (testType !== \"Negative\") {",
+									"    console.log(`Skipping iteration with type: ${testType}`);",
+									"    Postman.setNextRequest(null)",
+									"}",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"// pm.sendRequest({",
+									"//     url: 'https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login',",
+									"//     method: 'POST',",
+									"//     header: {",
+									"//         'Content-Type': 'application/json'",
+									"//     },",
+									"//     body: {",
+									"//         mode: 'raw',",
+									"//         raw: JSON.stringify({",
+									"//             \"userLoginEmail\": 'Team404@gmail.com',   ",
+									"//             \"password\": 'test'                   ",
+									"//         })",
+									"//     }",
+									"// }, function (err, res) {",
+									"//     if (err) {",
+									"//         console.error('Login request failed:', err);",
+									"//     } else {",
+									"//         console.log('Login response:', res.text());",
+									"//         let json;",
+									"//         try {",
+									"//             json = res.json();",
+									"//         } catch (e) {",
+									"//             console.error('Response is not valid JSON');",
+									"//             return;",
+									"//         }",
+									"",
+									"//         if (json.token) {",
+									"//             pm.environment.set('adminToken1', json.token);",
+									"//             console.log('adminToken saved:', json.token);",
+									"//         } else {",
+									"//             console.warn('No token found in login response.');",
+									"//         }",
+									"//     }",
+									"// });",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken1}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}{{endpoint}}",
+							"host": [
+								"{{base_url}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CreateDietician_TC01",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"// pm.test(\"Your test name\", function () {",
+							"//     var jsonData = pm.response.json();",
+							"//     pm.expect(jsonData.email).to.eql(jsonData.email);",
+							"// });",
+							"",
+							"pm.test(\"Response has dietician ID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"id\");",
+							"    console.log(\"Dietician created with ID: \" + jsonData.id);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{adminToken1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}{{endpoint}}",
+					"host": [
+						"{{base_url}}{{endpoint}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"",
+					"const LOGIN_URL = 'https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login';",
+					"const ADMIN_EMAIL = 'Team404@gmail.com';       ",
+					"const ADMIN_PASSWORD = 'test';             ",
+					"",
+					"function isTokenExpired() {",
+					"    const expiry = pm.environment.get('adminTokenExpiresAt');",
+					"    if (!expiry) return true;",
+					"    const now = new Date().getTime();",
+					"    return now >= parseInt(expiry);",
+					"}",
+					"if (!pm.environment.get('adminToken1') || isTokenExpired()) {",
+					"    console.log('Logging in to refresh admin token...');",
+					"",
+					"    pm.sendRequest({",
+					"        url: LOGIN_URL,",
+					"        method: 'POST',",
+					"        header: {",
+					"            'Content-Type': 'application/json'",
+					"        },",
+					"        body: {",
+					"            mode: 'raw',",
+					"            raw: JSON.stringify({",
+					"                userLoginEmail: ADMIN_EMAIL,",
+					"                password: ADMIN_PASSWORD",
+					"            })",
+					"        }",
+					"    }, function (err, res) {",
+					"        if (err) {",
+					"            console.error('Login request failed:', err);",
+					"        } else {",
+					"            const json = res.json();",
+					"",
+					"            if (json.token) {",
+					"                const token = json.token;",
+					"                const expiresInMillis = 60 * 60 * 1000; // ⏰ 1 hour (customize if needed)",
+					"",
+					"                // Save token and expiry",
+					"                pm.environment.set('adminToken1', token);",
+					"                pm.environment.set('adminTokenExpiresAt', (new Date().getTime() + expiresInMillis).toString());",
+					"",
+					"                console.log('Token saved:', token);",
+					"            } else {",
+					"                console.warn('Token not found in login response:', json);",
+					"            }",
+					"        }",
+					"    });",
+					"} else {",
+					"    console.log('Valid token found, skipping login');",
+					"}",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "admin_token",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUZWFtNDA0QGdtYWlsLmNvbSIsImlhdCI6MTc1MjYyOTgyMywiZXhwIjoxNzUyNjU4NjIzfQ.0aYd5XxHMCcdwnterrPUrRzYb1HfyWJyP-SfdrVrN61RfKjQKNc5IcBvUt_RHwKByULOjcP9_k9sjuh4C0M1Pg",
+			"type": "default"
+		},
+		{
+			"key": "base_url",
+			"value": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician",
+			"type": "default"
+		},
+		{
+			"key": "endpoint",
+			"value": "/dietician",
+			"type": "default"
+		}
+	]
+}
