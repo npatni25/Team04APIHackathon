@@ -1581,7 +1581,33 @@
 							"script": {
 								"id": "e4147433-9539-46cf-8387-0bb568b31842",
 								"exec": [
-									""
+									"// let patientId = pm.iterationData.get(\"patientId\");\r",
+									"// pm.variables.set(\"patientId\", patientId);\r",
+									"    // pm.environment.set('patientId', json.patientId);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// //  Status code check\r",
+									"// pm.test(\"Status code is 201\", function () {\r",
+									"//     pm.response.to.have.status(200);\r",
+									"// });\r",
+									"\r",
+									"// // Generate random Contact Number starting with 2\r",
+									"// const contactNumber = \"2\" + Math.floor(100000000 + Math.random() * 900000000);\r",
+									"// pm.environment.set(\"PatientContactNumber\", contactNumber);\r",
+									"\r",
+									"// // Generate unique email\r",
+									"// const emailPrefix = \"jane\" + Math.floor(Math.random() * 10000);\r",
+									"// pm.environment.set(\"PatientEmail\", `${emailPrefix}@example.com`);\r",
+									"\r",
+									"// // Generate random DOB between 1985 and 2002\r",
+									"// function getRandomDOB() {\r",
+									"//     const start = new Date(1985, 0, 1);\r",
+									"//     const end = new Date(2002, 11, 31);\r",
+									"//     const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));\r",
+									"//     return dob.toISOString().split('T')[0];\r",
+									"// }\r",
+									"// pm.environment.set(\"PatientDOB\", getRandomDOB());"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1672,16 +1698,9 @@
 							]
 						},
 						"url": {
-							"raw": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient",
-							"protocol": "https",
+							"raw": "{{base_url}}patient",
 							"host": [
-								"dietician-july-api-hackathon-80f2590665cc",
-								"herokuapp",
-								"com"
-							],
-							"path": [
-								"dietician",
-								"patient"
+								"{{base_url}}patient"
 							],
 							"query": [
 								{
@@ -1753,17 +1772,9 @@
 							]
 						},
 						"url": {
-							"raw": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient/{{patientId}}",
-							"protocol": "https",
+							"raw": "{{base_url}}{{patientId}}",
 							"host": [
-								"dietician-july-api-hackathon-80f2590665cc",
-								"herokuapp",
-								"com"
-							],
-							"path": [
-								"dietician",
-								"patient",
-								"{{patientId}}"
+								"{{base_url}}{{patientId}}"
 							],
 							"query": [
 								{
@@ -2243,7 +2254,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient"
+						"url": "{{base_url}}/dietician/patient"
 					},
 					"response": []
 				}
