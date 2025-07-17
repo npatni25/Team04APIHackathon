@@ -784,6 +784,11 @@
 											"\r",
 											"pm.test(\"Validate status code\", function () {\r",
 											"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate Response Body\", function () {\r",
+											"    let responseBody = pm.response.body();\r",
+											"    responseBody.to.have(pm.iterationData.get(\"expectedResponseBody\"))\r",
 											"});"
 										],
 										"type": "text/javascript",
