@@ -327,9 +327,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "3ec4ea33-28bf-40c6-95ca-4686c6d2276f",
 								"exec": [
 									"const reqname = pm.iterationData.get(\"Reqname\");\r",
-									"const myRequestName = \"Get Patient Morbidity Details\"; // 👈 Set manually per request\r",
+									"const myRequestName = \"Get Patient Morbidity Details\"; // 👈 Update this per request\r",
 									"\r",
 									"// Mark whether this request should execute\r",
 									"pm.variables.set(\"shouldRun\", reqname === myRequestName);\r",
@@ -338,43 +339,43 @@
 									"let method = pm.iterationData.get(\"method\");\r",
 									"if (method) pm.request.method = method.toUpperCase();\r",
 									"\r",
-									"// Replace environment variables inside the endpoint string\r",
+									"// Replace collection variables inside the endpoint string\r",
 									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
 									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
 									"\r",
-									"// Normalize slashes and set for dynamic use\r",
 									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
 									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
 									"\r",
-									"// Auth token logic\r",
+									"// Auth token logic using collection variables\r",
 									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\";\r",
+									"\r",
 									"if (authType === \"Dietician Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"dieticianToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
 									"    });\r",
 									"} else if (authType === \"Admin Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"adminToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
 									"    });\r",
 									"} else if (authType === \"Expired Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"expiredToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
 									"    });\r",
 									"} else if (authType === \"No Auth\") {\r",
 									"    pm.request.headers.remove(\"Authorization\");\r",
 									"}"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "3ec4ea33-28bf-40c6-95ca-4686c6d2276f"
+								"packages": {}
 							}
 						},
 						{
 							"listen": "test",
 							"script": {
+								"id": "8cdc748b-e3f2-497c-bfb6-33f6862142ed",
 								"exec": [
 									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));",
 									"const expectedStatusText = pm.iterationData.get(\"statusText\");",
@@ -388,8 +389,7 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "8cdc748b-e3f2-497c-bfb6-33f6862142ed"
+								"packages": {}
 							}
 						}
 					],
