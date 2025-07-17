@@ -768,8 +768,7 @@
 										"exec": [
 											"// Set dietician id variable from Json\r",
 											"let id = pm.iterationData.get(\"dieticianId\");\r",
-											"console.log(\"Processing GET dietician id endpoint using :: \" + id);\r",
-											"pm.variables.set(\"dieticianId\", id);"
+											"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -781,7 +780,9 @@
 										"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
 										"exec": [
 											"console.log(pm.iterationData.get(\"scenarioName\"));\r",
-											"pm.test(\"Validate status code :: \", function () {\r",
+											"console.log(\"Expected Status Code :: \" + pm.iterationData.get(\"responseCode\"));\r",
+											"\r",
+											"pm.test(\"Validate status code\", function () {\r",
 											"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
 											"});"
 										],
