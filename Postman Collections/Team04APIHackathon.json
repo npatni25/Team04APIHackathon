@@ -703,6 +703,7 @@
 								{
 									"listen": "test",
 									"script": {
+										"id": "c050e7c5-76e2-4b15-8d81-73c450cf7d87",
 										"exec": [
 											"// ✅ Status code check",
 											"pm.test(\"Status code is 200\", function () {",
@@ -714,10 +715,10 @@
 											"  type: \"object\",",
 											"  properties: {",
 											"    token: { type: \"string\" },",
-											"    userId: { type: \"string\" },",
+											"    userId: { type: \"integer\" },",
 											"    email: { type: \"string\" }",
 											"  },",
-											"  required: [\"token\", \"userId\", \"email\"]",
+											"  required: [\"token\", \"userId\", \"loginUserEmail\"]",
 											"};",
 											"pm.test(\"Schema is valid\", function () {",
 											"  pm.response.to.have.jsonSchema(schema);",
@@ -727,8 +728,7 @@
 											"pm.environment.set(\"dieticianToken\", json.token);"
 										],
 										"type": "text/javascript",
-										"packages": {},
-										"id": "c050e7c5-76e2-4b15-8d81-73c450cf7d87"
+										"packages": {}
 									}
 								}
 							],
@@ -746,7 +746,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+									"raw": "{\n  \"userLoginEmail\": \"dietician.ashaa@example.com\",\n  \"password\": \"Acadia42\"\n}"
 								},
 								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
 							},
