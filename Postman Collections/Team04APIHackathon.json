@@ -1704,43 +1704,40 @@
 					"response": []
 				},
 				{
-					"name": "Add_report_By_PatientId_bs",
+					"name": "Add New Reports",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "c610227b-041c-4f7f-80e0-6faacf68e27d",
 								"exec": [
-									"// ✅ Status code check\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"// ✅ Schema validation (example - adjust per endpoint)\r",
-									"const schema = {\r",
-									"  type: \"object\",\r",
-									"  properties: {\r",
-									"    token: { type: \"string\" },\r",
-									"    userId: { type: \"string\" },\r",
-									"    email: { type: \"string\" }\r",
-									"  },\r",
-									"  required: [\"token\", \"userId\", \"email\"]\r",
-									"};\r",
-									"pm.test(\"Schema is valid\", function () {\r",
-									"  pm.response.to.have.jsonSchema(schema);\r",
-									"});\r",
-									"\r",
-									"let json = pm.response.json();\r",
-									"if (json.patientId) {\r",
-									"    pm.environment.set(\"patientId\", json.patientId);\r",
-									"}"
+									"// ✅ Status code check",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// ✅ Schema validation (example - adjust per endpoint)",
+									"const schema = {",
+									"  type: \"object\",",
+									"  properties: {",
+									"    token: { type: \"string\" },",
+									"    userId: { type: \"string\" },",
+									"    email: { type: \"string\" }",
+									"  },",
+									"  required: [\"token\", \"userId\", \"email\"]",
+									"};",
+									"pm.test(\"Schema is valid\", function () {",
+									"  pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"id": "b0321dd6-c1dc-41c0-a632-a8c71b3e5198"
 							}
 						}
 					],
-					"id": "4f1edd30-76ae-488c-9ca7-f24214e21b2b",
+					"id": "16614059-d800-4c62-861c-492c5e882686",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1754,6 +1751,10 @@
 						"method": "PUT",
 						"header": [
 							{
+								"key": "Authorization",
+								"value": "Bearer {{dieticianToken}}"
+							},
+							{
 								"key": "Content-Type",
 								"value": "multipart/form-data",
 								"type": "text"
@@ -1764,15 +1765,18 @@
 							"formdata": [
 								{
 									"key": "patientInfo",
-									"value": "{ \n\"FirstName\": \"{{p_FirstName}}\",\n\"LastName\": \"{{p_Lastname}}\",\n\"ContactNumber\": \"{{p_ContactNumber}}\",\n\"Email\": \"{{p_Email}}\",\n\"Allergy\": \"{{p_Allergy}}\",\n\"FoodPreference\": \"{{p_FoodPreferences}}\",\n\"CuisineCategory\":\"{{p_CuisineCatergory}}\",\n\"DateOfBirth\": \"{{p_DateOfBirth}}\"\n},\n{  “Weight“ : {{Weight}},“Height” : {{Height}},“Temperature” : {{Temperature}},“SP” : {{SP}},“DP” : {{DP}}}",
-									"type": "text",
-									"uuid": "9afbfed6-0e0c-486c-a0dd-883baf8fb4cc"
+									"value": "{\n  \"FirstName\": \"Jane\",\n  \"LastName\": \"Smith\",\n  \"ContactNumber\": \"9916543210\",\n  \"Email\": \"jane.smiiith319@example.com\",\n  \"Allergy\": \"NONE\",\n  \"FoodPreference\": \"Vegetarian\",\n  \"CuisineCategory\": \"Indian\",\n  \"DateOfBirth\": \"1993-05-20\"\n}",
+									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"uuid": "8399746f-4e79-4f39-8c74-ef45c95b62ae",
-									"value": null
+									"src": "/C:/Users/chand/Downloads/Sample reports-20250523T164632Z-1-001 (1)/Sample reports/HyperThyroid_Report_final.pdf"
+								},
+								{
+									"key": "vitals",
+									"value": "{\n  \"Weight\": 70.0,\n  \"Height\": 170.0,\n  \"Temperature\": 36.5,\n  \"SP\": 120,\n  \"DP\": 80\n}",
+									"type": "text"
 								}
 							]
 						},
