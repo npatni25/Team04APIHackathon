@@ -2712,13 +2712,36 @@
 			"item": [
 				{
 					"name": "DeleteDieticianByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "63689547-2c1c-49b9-a0dd-5e615b7a04ca",
+								"exec": [
+									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));\r",
+									"const expectedStatusText = pm.iterationData.get(\"statusText\");\r",
+									"\r",
+									"pm.test(\"Status Code matches\", function () {\r",
+									"    pm.response.to.have.status(expectedStatus);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status Text matches\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(expectedStatusText);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "f05a5786-f372-4dfb-9dd6-be3206f9108c",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"url": "{{base_url}}/dietician/{{dieticianId}}"
 					},
 					"response": []
 				},
