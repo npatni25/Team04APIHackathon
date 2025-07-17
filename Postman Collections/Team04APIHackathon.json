@@ -1564,11 +1564,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/{{patientId}}",
+							"raw": "{{base_url}}/patient/{{patientId}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"patient",
 								"{{patientId}}"
 							],
 							"query": [
@@ -2466,7 +2467,7 @@
 								"auth": {
 									"type": "bearer",
 									"bearer": {
-										"token": "{{adminToken}}"
+										"token": "{{dieticianToken}}"
 									}
 								},
 								"method": "GET",
@@ -2482,8 +2483,15 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{base_url}}morbidity/567867"
 							},
 							"response": []
 						},
@@ -2511,7 +2519,7 @@
 										}
 									}
 								},
-								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/hba1c"
+								"url": "{{base_url}}/morbidity/hba1c"
 							},
 							"response": []
 						},
@@ -2539,7 +2547,7 @@
 										}
 									}
 								},
-								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/ "
+								"url": "{{base_url}}/morbidity/ "
 							},
 							"response": []
 						},
@@ -2567,7 +2575,7 @@
 										}
 									}
 								},
-								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/@#"
+								"url": "{{base_url}}/morbidity/@#"
 							},
 							"response": []
 						},
@@ -2595,7 +2603,7 @@
 										}
 									}
 								},
-								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/pregnancy"
+								"url": "{{base_url}}/morbidity/pregnancy"
 							},
 							"response": []
 						}
