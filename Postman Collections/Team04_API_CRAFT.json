@@ -143,7 +143,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}\n\n// ✅ Status code check\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});"
+							"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}\n\n"
 						},
 						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
 					},
