@@ -1006,7 +1006,241 @@
 				},
 				{
 					"name": "GetDieticianUsingDieticianRole",
-					"item": [],
+					"item": [
+						{
+							"name": "TC05_DieticianById_ValidToken",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+										"exec": [
+											"// Set dietician id variable from Json\r",
+											"let id = pm.iterationData.get(\"dieticianId\");\r",
+											"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+										"exec": [
+											"console.log(pm.iterationData.get(\"scenarioName\"));\r",
+											"console.log(\"Expected Status Code :: \" + pm.iterationData.get(\"responseCode\"));\r",
+											"\r",
+											"pm.test(\"Validate status code\", function () {\r",
+											"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response body matches expected JSON\", function () {\r",
+											"    let responseBody = pm.response.json();\r",
+											"    let expectedResponseBody = pm.iterationData.get(\"expectedResponseBody\");\r",
+											"    if (responseBody.hasOwnProperty(\"timestamp\")){\r",
+											"        responseBody.timestamp = \"\";\r",
+											"    }\r",
+											"    pm.expect(responseBody).to.eql(expectedResponseBody);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "0d515d62-9a3b-47e5-bff4-d0178c52aea1",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{admin_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/dietician/{{dieticianId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "TC06_DieticianById_InvalidMethod",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+										"exec": [
+											"// Set dietician id variable from Json\r",
+											"let id = pm.iterationData.get(\"dieticianId\");\r",
+											"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+										"exec": [
+											"pm.test(\"Validate status code\", function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "0ad26857-bc05-4912-82a9-acff86181af4",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{admin_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/dietician/{{dieticianId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "TC07_DieticianById_NoAuth",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+										"exec": [
+											"// Set dietician id variable from Json\r",
+											"let id = pm.iterationData.get(\"dieticianId\");\r",
+											"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+										"exec": [
+											"pm.test(\"Validate status code\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "fa2451a0-e52a-43b4-acd8-c718f3036cad",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/dietician/{{dieticianId}}"
+							},
+							"response": []
+						},
+						{
+							"name": "TC08_DieticianById_InvalidToken",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+										"exec": [
+											"// Set dietician id variable from Json\r",
+											"let id = pm.iterationData.get(\"dieticianId\");\r",
+											"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+										"exec": [
+											"pm.test(\"Validate status code\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "8061030a-4f61-4062-bc93-b4526a653847",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "test"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/dietician/{{dieticianId}}"
+							},
+							"response": []
+						}
+					],
 					"id": "0a84815d-0a1f-47a8-98bc-f512bc207d3d"
 				},
 				{
