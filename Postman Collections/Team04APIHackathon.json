@@ -20,11 +20,14 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "26bb88c0-5e32-4e0e-8eec-efebbe9a1a1c",
 								"exec": [
 									"var json = pm.response.json();",
-									"pm.environment.set('dieticianEmail', json.Email);",
-									"pm.environment.set('dieticianPassword', json.loginPassword);",
-									"pm.environment.set('dieticianId', json.id);",
+									"",
+									"pm.collectionVariables.set('dieticianEmail', json.Email);",
+									"pm.collectionVariables.set('dieticianPassword', json.loginPassword);",
+									"pm.collectionVariables.set('dieticianId', json.id);",
+									"",
 									"console.log('Dietician created. Email: ' + json.Email + ', Password: ' + json.loginPassword + ', dieticianId: ' + json.id);",
 									"",
 									"// ✅ Status code check",
@@ -33,13 +36,13 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "26bb88c0-5e32-4e0e-8eec-efebbe9a1a1c"
+								"packages": {}
 							}
 						},
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "8f74a299-23dc-4b78-b6dc-8cf921c3c9ec",
 								"exec": [
 									"// Generate random 10-digit Contact Number\r",
 									"const randomContact = \"1\" + Math.floor(100000000 + Math.random() * 900000000);\r",
@@ -59,8 +62,7 @@
 									"pm.variables.set(\"DateOfBirth\", getRandomDOB());"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "8f74a299-23dc-4b78-b6dc-8cf921c3c9ec"
+								"packages": {}
 							}
 						}
 					],
@@ -94,6 +96,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "7590bdce-6b1c-4e95-9bb0-2aed7a49fde9",
 								"exec": [
 									"// ✅ Status code check",
 									"pm.test(\"Status code is 200\", function () {",
@@ -101,11 +104,17 @@
 									"});",
 									"",
 									"let json = pm.response.json();",
-									"pm.environment.set(\"dieticianToken\", json.token);"
+									"pm.collectionVariables.set(\"dieticianToken\", json.token);"
 								],
 								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
 								"packages": {},
-								"id": "7590bdce-6b1c-4e95-9bb0-2aed7a49fde9"
+								"type": "text/javascript"
 							}
 						}
 					],
