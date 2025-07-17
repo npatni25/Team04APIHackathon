@@ -148,6 +148,113 @@
 						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
 					},
 					"response": []
+				},
+				{
+					"name": "CreateDieticianAll",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8784b4c1-ea82-4c25-a307-3f5306a8c97b",
+								"exec": [
+									"const reqName = pm.iterationData.get(\"requestName\");",
+									"",
+									"if (reqName !== \"CreateDietician\") {",
+									"    console.log(`Skipping iteration with name: ${reqName}`);",
+									"    Postman.setNextRequest(null)",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "409ee34c-efd9-49e4-a4fc-d07ca65fffef",
+								"exec": [
+									"// Read scenario name from the current iteration data",
+									"const testCaseId = pm.iterationData.get(\"TestCase\");",
+									"const testCaseName = pm.iterationData.get(\"Name\");",
+									"console.log(`Running Test Case: ${testCaseId} - ${testCaseName}`);",
+									"pm.test(`Executed: ${testCaseId} - ${testCaseName}`, function () {",
+									"    pm.expect(testCaseId).to.not.be.undefined;",
+									"});",
+									"",
+									"//Check status code and error is as expected",
+									"pm.test(\"Status code / error message are as expected\", function () {",
+									"    try {",
+									"        const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+									"        const expectedError = pm.iterationData.get(\"expectedErrorMessage\");",
+									"        if (isNaN(expectedCode)) {",
+									"            throw new Error(\"Expected status code is not a valid number.\");",
+									"        }",
+									"        pm.expect(pm.response.code).to.eql(expectedCode);",
+									"        console.log(`Status code matched: ${expectedCode}`);",
+									"        const responseBody = pm.response.json();",
+									"",
+									"        if (expectedError) {",
+									"            const actualError = responseBody.error || responseBody.message || responseBody.detail || JSON.stringify(responseBody);",
+									"            pm.expect(actualError).to.include(expectedError);",
+									"            console.log(`Error message matched: ${expectedError}`);",
+									"        }",
+									"",
+									"    } catch (err) {",
+									"        console.error(`❌ Test failed: ${err.message}`);",
+									"        console.error(`Response Status: ${pm.response.code}`);",
+									"        console.error(`Expected Status: ${pm.iterationData.get(\"statusCode\")}`);",
+									"        console.error(`Expected Error: ${pm.iterationData.get(\"expectedErrorMessage\")}`);",
+									"        console.error(`Actual Response: ${pm.response.text()}`);",
+									"        throw err; ",
+									"    }",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									"// pm.test(\"Status code is as expected\", function () {",
+									"//     const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+									"//     pm.response.to.have.status(expectedCode);",
+									"// });",
+									"",
+									"",
+									"// pm.test(\"Status text is as expected\", function () {",
+									"//     const expectedText = pm.iterationData.get(\"statusText\");",
+									"//     pm.expect(pm.response.status).to.eql(expectedText);",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "1fe7f53d-61b3-436f-8a2b-df69940319f7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+						},
+						"url": "dieticianhttps://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician"
+					},
+					"response": []
 				}
 			],
 			"id": "d9ade4ce-f9e9-4847-a481-c0d2dd1ca4ec"
@@ -158,113 +265,6 @@
 				{
 					"name": "CreateDietician",
 					"item": [
-						{
-							"name": "CreateDieticianAll",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "8784b4c1-ea82-4c25-a307-3f5306a8c97b",
-										"exec": [
-											"const reqName = pm.iterationData.get(\"requestName\");",
-											"",
-											"if (reqName !== \"CreateDietician\") {",
-											"    console.log(`Skipping iteration with name: ${reqName}`);",
-											"    Postman.setNextRequest(null)",
-											"}"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "409ee34c-efd9-49e4-a4fc-d07ca65fffef",
-										"exec": [
-											"// Read scenario name from the current iteration data",
-											"const testCaseId = pm.iterationData.get(\"TestCase\");",
-											"const testCaseName = pm.iterationData.get(\"Name\");",
-											"console.log(`Running Test Case: ${testCaseId} - ${testCaseName}`);",
-											"pm.test(`Executed: ${testCaseId} - ${testCaseName}`, function () {",
-											"    pm.expect(testCaseId).to.not.be.undefined;",
-											"});",
-											"",
-											"//Check status code and error is as expected",
-											"pm.test(\"Status code / error message are as expected\", function () {",
-											"    try {",
-											"        const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
-											"        const expectedError = pm.iterationData.get(\"expectedErrorMessage\");",
-											"        if (isNaN(expectedCode)) {",
-											"            throw new Error(\"Expected status code is not a valid number.\");",
-											"        }",
-											"        pm.expect(pm.response.code).to.eql(expectedCode);",
-											"        console.log(`Status code matched: ${expectedCode}`);",
-											"        const responseBody = pm.response.json();",
-											"",
-											"        if (expectedError) {",
-											"            const actualError = responseBody.error || responseBody.message || responseBody.detail || JSON.stringify(responseBody);",
-											"            pm.expect(actualError).to.include(expectedError);",
-											"            console.log(`Error message matched: ${expectedError}`);",
-											"        }",
-											"",
-											"    } catch (err) {",
-											"        console.error(`❌ Test failed: ${err.message}`);",
-											"        console.error(`Response Status: ${pm.response.code}`);",
-											"        console.error(`Expected Status: ${pm.iterationData.get(\"statusCode\")}`);",
-											"        console.error(`Expected Error: ${pm.iterationData.get(\"expectedErrorMessage\")}`);",
-											"        console.error(`Actual Response: ${pm.response.text()}`);",
-											"        throw err; ",
-											"    }",
-											"});",
-											"",
-											"",
-											"",
-											"",
-											"// pm.test(\"Status code is as expected\", function () {",
-											"//     const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
-											"//     pm.response.to.have.status(expectedCode);",
-											"// });",
-											"",
-											"",
-											"// pm.test(\"Status text is as expected\", function () {",
-											"//     const expectedText = pm.iterationData.get(\"statusText\");",
-											"//     pm.expect(pm.response.status).to.eql(expectedText);",
-											"// });"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"id": "1fe7f53d-61b3-436f-8a2b-df69940319f7",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{adminToken}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
-								},
-								"url": "{{base_url}}/dietician"
-							},
-							"response": []
-						},
 						{
 							"name": "AuthCheck_NonAdminCheck",
 							"event": [
