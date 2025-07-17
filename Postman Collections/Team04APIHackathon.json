@@ -786,9 +786,10 @@
 											"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
 											"});\r",
 											"\r",
-											"pm.test(\"Validate Response Body\", function () {\r",
-											"    let responseBody = pm.response.body();\r",
-											"    responseBody.to.have(pm.iterationData.get(\"expectedResponseBody\"))\r",
+											"pm.test(\"Response body matches expected JSON\", function () {\r",
+											"    let responseBody = pm.response.json();\r",
+											"    let expectedResponseBody = pm.iterationData.get(\"expectedResponseBody\");\r",
+											"    pm.expect(responseBody).to.eql(expectedResponseBody);\r",
 											"});"
 										],
 										"type": "text/javascript",
