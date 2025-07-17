@@ -1608,114 +1608,531 @@
 						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient"
 					},
 					"response": []
-				},
-				{
-					"name": "Delete Patient by ID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "df7faa82-642d-4aaf-a301-33762a4badfb",
-								"exec": [
-									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));",
-									"const expectedStatusText = pm.iterationData.get(\"statusText\");",
-									"",
-									"pm.test(\"Status Code matches\", function () {",
-									"    pm.response.to.have.status(expectedStatus);",
-									"});",
-									"",
-									"pm.test(\"Status Text matches\", function () {",
-									"    pm.expect(pm.response.status).to.eql(expectedStatusText);",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "7e40c849-b4cf-42c0-9214-97f5ffc8d9d0",
-								"exec": [
-									"const reqname = pm.iterationData.get(\"Reqname\");\r",
-									"const myRequestName = \"Delete Patient by ID\"; \r",
-									"\r",
-									"\r",
-									"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
-									"\r",
-									" \r",
-									"let method = pm.iterationData.get(\"method\"); // Set HTTP method dynamically\r",
-									"if (method) pm.request.method = method.toUpperCase();\r",
-									"\r",
-									"\r",
-									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Get and substitute dynamic endpoint from JSON data\r",
-									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
-									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\"); // clean leading slashes\r",
-									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
-									"\r",
-									"\r",
-									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Handle Authorization by role using collection variables\r",
-									"\r",
-									"if (authType === \"Dietician Token\") {\r",
-									"    pm.request.headers.upsert({\r",
-									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
-									"    });\r",
-									"} else if (authType === \"Admin Token\") {\r",
-									"    pm.request.headers.upsert({\r",
-									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
-									"    });\r",
-									"} else if (authType === \"Expired Token\") {\r",
-									"    pm.request.headers.upsert({\r",
-									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
-									"    });\r",
-									"} else if (authType === \"No Auth\") {\r",
-									"    pm.request.headers.remove(\"Authorization\");\r",
-									"}\r",
-									"\r",
-									"\r",
-									"console.log(\"Scenario:\", pm.iterationData.get(\"scenario\")); // Log for debugging\r",
-									"console.log(\"Method:\", method);\r",
-									"console.log(\"Auth Type:\", authType);\r",
-									"console.log(\"Final Endpoint:\", substitutedEndpoint);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"id": "3d5c1a23-9ea4-4a93-8a06-af2f752668f5",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{dieticianToken}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}{{dynamicEndpoint}}"
-					},
-					"response": []
 				}
 			],
 			"id": "3756d598-3916-41fb-a02a-8e2e7f6946cd"
+		},
+		{
+			"name": "Morbidity",
+			"item": [
+				{
+					"name": "ADMIN role",
+					"item": [
+						{
+							"name": "TC_GET_MORB_ADMIN_001_Retrive_all_morbidity_valid bearer token_200_OK",
+							"id": "6f2faebd-7137-4912-a616-9970b1a7d948",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_002_Retrive_all_morbidity_Invalid bearer token_401_Unauthorized",
+							"id": "ba9396bb-f5d3-4dc0-90c6-c40462d36328",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_003_Retrive_all_morbidity_Invalid baseURL_404_Not Found",
+							"id": "73a70bc4-864f-4d8f-ad64-d71023220074",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_POST_MORB_ADMIN_004_Retrive_all_morbidity_Invalid Method_400_Bad Request",
+							"id": "29c35a10-2b56-4448-8b65-cbdf780c9e91",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_005_Retrive_all_morbidity_Invalid End point_404_Not Found",
+							"id": "51caea3c-11c4-4c20-b771-05af482fc02c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morb"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_006_Retrive_all_morbidity_valid_test name_200_OK",
+							"id": "143e41c9-c4dd-4db8-a68c-0ba62d994ae1",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_007_Retrive_all_morbidity_partial_test name_200_OK",
+							"id": "39b053e2-4029-49b0-b766-8c98b93f9f60",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_008_Retrive_all_morbidity_Numbers in test name_404_Not Found",
+							"id": "53a404b5-4b83-4b9c-8924-391f0ef89fc6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_009_Retrive_morbidity_Lowercase letters in test name_200_OK",
+							"id": "e8d9f9cb-dfb0-43ee-a468-002563c82def",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/blood pressure"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_010_Retrive_morbidity_Null/blank in test name_200_OK",
+							"id": "ea6045e0-391b-47e8-9fea-9acea554a27d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{admin_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/blood pressure"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_011_Retrive_morbidity_spcl charac in test name_404_Not Found",
+							"id": "26669c23-52c1-4a31-bdfc-46f47f3e91fe",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/@#bloodpressure"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_012_Retrive_morbidity_ invalid test name_404_Not Found",
+							"id": "04d860ad-4ecc-45d7-8d46-e504e0793d92",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/morbidity/bp"
+							},
+							"response": []
+						}
+					],
+					"id": "87f83aed-4133-420a-9576-8fdba39fdd35"
+				},
+				{
+					"name": "Dietcian role",
+					"item": [
+						{
+							"name": "TC_GET_MORB_DIET_001_GET _all morbidity_valid bearer token_200_OK",
+							"id": "2627ff02-ef8b-4493-89c9-e9251b00ca09",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_002_GET_all morbidity_invalid bearer token_401_Unauthorized",
+							"id": "55f35a3e-a451-45dc-9fe7-5a2b39a17e99",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}00"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_003_GET_all morbidity_invalid base URL_404_Not Found",
+							"id": "162debeb-76f2-4748-b482-895fa6af9973",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon80f2590665cc.herokuapp.com/dietician/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_POST_MORB_DIET_004_POST_all morbidity_invalid method_400_Bad Request",
+							"id": "b45a3218-ac9e-4996-b5b3-4c0e1ca5fdc1",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_005_GET_all morbidity_invalid endpoint_404_Not found",
+							"id": "0420821a-a3b2-4d24-92ad-b12442e01698",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbdity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_006_Retrieve morbidity with valid test name_200_OK",
+							"id": "0f55f1cf-133e-48c3-b3a6-37045f056dda",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/blood pressure"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_007_Retrieve morbidity with partial test name_200_OK",
+							"id": "672b2c37-4883-4a7f-8cbb-bf519537c33b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/blood "
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_008_Retrieve morbidity with numbers in test name_404_Not Found",
+							"id": "2d7d4291-5737-446d-b1e9-e47fe0761945",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_009_Retrieve_morbidity_Lowercase letters _test name_200_OK",
+							"id": "7041eebe-4c1d-4078-9327-093df619eb4f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/hba1c"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_010_Retrieve_morbidity_Null/Blank_test name_200_OK",
+							"id": "41fc4315-4711-4c0f-ba06-2efd0905ef10",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/ "
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_011_Retrieve_morbidity_spcl characters _test name_404_Not Found",
+							"id": "ce54ed81-dd48-4f14-aa79-8bc72a000339",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/@#"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_012_Retrieve_morbidity_invalid/non-existant_test name_404_Not Found",
+							"id": "5f3df44d-66f3-49d4-bb3c-a667fab960d0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/pregnancy"
+							},
+							"response": []
+						}
+					],
+					"id": "d66bffcd-ffb5-4e5a-9590-38cc2630ec37"
+				}
+			],
+			"id": "43ee67dd-3ba7-4336-bf2b-aa2419ec9bfc"
 		},
 		{
 			"name": "Balauma_GetDieticianById",
@@ -2410,8 +2827,114 @@
 			"id": "a37ff4db-b0fd-4496-955f-d4509667ee0d"
 		},
 		{
-			"name": "New Folder",
-			"item": [],
+			"name": "Delete and CleanUp",
+			"item": [
+				{
+					"name": "Delete Patient by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "df7faa82-642d-4aaf-a301-33762a4badfb",
+								"exec": [
+									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));",
+									"const expectedStatusText = pm.iterationData.get(\"statusText\");",
+									"",
+									"pm.test(\"Status Code matches\", function () {",
+									"    pm.response.to.have.status(expectedStatus);",
+									"});",
+									"",
+									"pm.test(\"Status Text matches\", function () {",
+									"    pm.expect(pm.response.status).to.eql(expectedStatusText);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7e40c849-b4cf-42c0-9214-97f5ffc8d9d0",
+								"exec": [
+									"const reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const myRequestName = \"Delete Patient by ID\"; \r",
+									"\r",
+									"\r",
+									"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
+									"\r",
+									" \r",
+									"let method = pm.iterationData.get(\"method\"); // Set HTTP method dynamically\r",
+									"if (method) pm.request.method = method.toUpperCase();\r",
+									"\r",
+									"\r",
+									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Get and substitute dynamic endpoint from JSON data\r",
+									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\"); // clean leading slashes\r",
+									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+									"\r",
+									"\r",
+									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Handle Authorization by role using collection variables\r",
+									"\r",
+									"if (authType === \"Dietician Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Admin Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Expired Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+									"    });\r",
+									"} else if (authType === \"No Auth\") {\r",
+									"    pm.request.headers.remove(\"Authorization\");\r",
+									"}\r",
+									"\r",
+									"\r",
+									"console.log(\"Scenario:\", pm.iterationData.get(\"scenario\")); // Log for debugging\r",
+									"console.log(\"Method:\", method);\r",
+									"console.log(\"Auth Type:\", authType);\r",
+									"console.log(\"Final Endpoint:\", substitutedEndpoint);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "3d5c1a23-9ea4-4a93-8a06-af2f752668f5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dieticianToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}{{dynamicEndpoint}}"
+					},
+					"response": []
+				}
+			],
 			"id": "1cc4e5b6-68de-4bd4-b355-4c8deb1e1a5c"
 		}
 	],
