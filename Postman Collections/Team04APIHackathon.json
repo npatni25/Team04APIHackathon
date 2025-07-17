@@ -1041,15 +1041,15 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "b7e20484-f247-4d29-98ea-e6c4871d8f47",
+				"id": "00fa670e-07b6-4abd-97a9-5bcb92d3c24e",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
-					"const loginUrl = pm.environment.get(\"base_url\") + \"/dietician/login\";\r",
-					"const adminEmail = pm.environment.get(\"adminEmail\");\r",
-					"const adminPassword = pm.environment.get(\"adminPassword\");\r",
+					"const loginUrl = pm.collectionVariables.get(\"base_url\") + \"/dietician/login\";\r",
+					"const adminEmail = pm.collectionVariables.get(\"adminEmail\");\r",
+					"const adminPassword = pm.collectionVariables.get(\"adminPassword\");\r",
 					"\r",
-					"if (!pm.environment.get(\"adminToken\")) {\r",
+					"if (!pm.collectionVariables.get(\"adminToken\")) {\r",
 					"    console.log(\"🔐 Logging in to get Admin Token...\");\r",
 					"\r",
 					"    pm.sendRequest({\r",
@@ -1071,8 +1071,8 @@
 					"            const token = jsonData.token;\r",
 					"\r",
 					"            if (token) {\r",
-					"                pm.environment.set(\"adminToken\", token);\r",
-					"                console.log(\"✅ Admin token saved to environment.\");\r",
+					"                pm.collectionVariables.set(\"adminToken\", token);\r",
+					"                console.log(\"✅ Admin token saved to collection variables.\");\r",
 					"            } else {\r",
 					"                console.error(\"❌ Token not found in login response:\", jsonData);\r",
 					"            }\r",
@@ -1085,7 +1085,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "b54778fa-6e09-48f6-b2cb-b0b4e1ab67ae",
+				"id": "f061a534-cfe3-44d0-bb8b-0fa3b6554c1c",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1097,12 +1097,12 @@
 	"variable": [
 		{
 			"key": "adminEmail",
-			"value": "",
+			"value": "Team404@gmail.com",
 			"type": "string"
 		},
 		{
 			"key": "adminPassword",
-			"value": "",
+			"value": "test",
 			"type": "string"
 		},
 		{
@@ -1117,7 +1117,7 @@
 		},
 		{
 			"key": "base_url",
-			"value": "",
+			"value": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician",
 			"type": "string"
 		},
 		{
