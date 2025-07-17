@@ -998,6 +998,40 @@
 					"name": "GetDieticianUsingDieticianRole",
 					"item": [],
 					"id": "0a84815d-0a1f-47a8-98bc-f512bc207d3d"
+				},
+				{
+					"name": "GetAllDieticianUsingDieticianRole",
+					"item": [
+						{
+							"name": "TC01_GET_AllDieticians",
+							"id": "d4054abf-7128-497f-b786-2be419c5be0a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician"
+							},
+							"response": []
+						}
+					],
+					"id": "f8a7f2cc-5bd0-49a6-bb50-1c18d2e63428"
 				}
 			],
 			"id": "a37ff4db-b0fd-4496-955f-d4509667ee0d"
