@@ -1045,9 +1045,37 @@
 									"script": {
 										"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
 										"exec": [
-											"// Set dietician id variable from Json\r",
 											"let id = pm.iterationData.get(\"dieticianId\");\r",
-											"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+											"console.log(\"Processing GET dietician id endpoint using :: \" + id);\r",
+											"\r",
+											"let method = pm.iterationData.get(\"method\");\r",
+											"if (method) pm.request.method = method.toUpperCase();\r",
+											"\r",
+											"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+											"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+											"\r",
+											"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
+											"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+											"\r",
+											"\r",
+											"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
+											"\r",
+											"if (authType === \"Dietician Token\") {\r",
+											"    pm.request.headers.upsert({\r",
+											"        key: \"Authorization\",\r",
+											"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+											"    });\r",
+											"} else if (authType === \"Admin Token\") {\r",
+											"    pm.request.headers.upsert({\r",
+											"        key: \"Authorization\",\r",
+											"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+											"    });\r",
+											"} else if (authType === \"Expired Token\") {\r",
+											"    pm.request.headers.upsert({\r",
+											"        key: \"Authorization\",\r",
+											"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+											"    });\r",
+											"} "
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -1087,7 +1115,7 @@
 								"auth": {
 									"type": "bearer",
 									"bearer": {
-										"token": "{{admin_token}}"
+										"token": "{{dietician_token}}"
 									}
 								},
 								"method": "GET",
