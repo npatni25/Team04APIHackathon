@@ -767,7 +767,9 @@
 										"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
 										"exec": [
 											"// Set dietician id variable from Json\r",
-											"pm.variables.set(\"dieticianId\", pm.iterationData.get(\"dieticianId\"));"
+											"let id = pm.iterationData.get(\"dieticianId\");\r",
+											"console.log(\"Processing GET dietician id endpoint using :: \" + id);\r",
+											"pm.variables.set(\"dieticianId\", id);"
 										],
 										"type": "text/javascript",
 										"packages": {}
