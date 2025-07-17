@@ -94,7 +94,10 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": {
+								"token": "{{adminToken}}"
+							}
 						},
 						"method": "POST",
 						"header": [
