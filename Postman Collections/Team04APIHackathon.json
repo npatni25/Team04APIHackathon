@@ -148,96 +148,6 @@
 						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
 					},
 					"response": []
-				},
-				{
-					"name": "Create Patient",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "ee4dbaf4-875b-4779-8ebd-1852c0060aae",
-								"exec": [
-									"// Assuming patientId comes in response",
-									"var json = pm.response.json();",
-									"",
-									"if (json.patientId) {",
-									"    pm.collectionVariables.set('patientId', json.patientId);",
-									"    console.log('Patient created with ID: ' + json.patientId);",
-									"} else {",
-									"    console.log('Patient ID not found in response');",
-									"}",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "58f8276e-88b6-47cf-a5fd-8e3a4258be11",
-								"exec": [
-									"// Generate random Contact Number starting with 2\r",
-									"const contactNumber = \"2\" + Math.floor(100000000 + Math.random() * 900000000);\r",
-									"pm.collectionVariables.set(\"PatientContactNumber\", contactNumber);\r",
-									"\r",
-									"// Generate unique email\r",
-									"const emailPrefix = \"jane\" + Math.floor(Math.random() * 10000);\r",
-									"pm.collectionVariables.set(\"PatientEmail\", `${emailPrefix}@example.com`);\r",
-									"\r",
-									"// Generate random DOB between 1985 and 2002\r",
-									"function getRandomDOB() {\r",
-									"    const start = new Date(1985, 0, 1);\r",
-									"    const end = new Date(2002, 11, 31);\r",
-									"    const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));\r",
-									"    return dob.toISOString().split('T')[0]; // format: YYYY-MM-DD\r",
-									"}\r",
-									"pm.collectionVariables.set(\"PatientDOB\", getRandomDOB());"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"id": "3a7a8f18-e01b-4cbc-9ed9-7282af7e7bbb",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{dieticianToken}}"
-							}
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{dieticianToken}}"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "patientInfo",
-									"value": "{\n  \"FirstName\": \"Jaane\",\n  \"LastName\": \"Smith\",\n  \"ContactNumber\": \"{{PatientContactNumber}}\",\n  \"Email\": \"{{PatientEmail}}\",\n  \"Allergy\": \"NONE\",\n  \"FoodPreference\": \"Vegetarian\",\n  \"CuisineCategory\": \"Indian\",\n  \"DateOfBirth\": \"{{PatientDOB}}\"\n}",
-									"type": "text"
-								},
-								{
-									"key": "file",
-									"value": "",
-									"type": "file"
-								}
-							]
-						},
-						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient"
-					},
-					"response": []
 				}
 			],
 			"id": "d9ade4ce-f9e9-4847-a481-c0d2dd1ca4ec"
@@ -2940,7 +2850,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "c762adf7-0e43-4131-b215-d215fd7ab127",
+				"id": "a6736654-064c-4aa4-a603-1439d24b5478",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -3000,7 +2910,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "c60dffc4-cb38-45ad-8f45-57b5542a0fe7",
+				"id": "aada33b9-fea6-4a62-83d8-567ae6f619ec",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -3070,7 +2980,8 @@
 		},
 		{
 			"key": "DateOfBirth",
-			"value": ""
+			"value": "",
+			"disabled": true
 		},
 		{
 			"key": "dieticianToken",
@@ -3078,14 +2989,21 @@
 		},
 		{
 			"key": "PatientContactNumber",
-			"value": ""
+			"value": "",
+			"disabled": true
 		},
 		{
 			"key": "PatientEmail",
-			"value": ""
+			"value": "",
+			"disabled": true
 		},
 		{
 			"key": "PatientDOB",
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": "DateOfBirth",
 			"value": ""
 		}
 	]
