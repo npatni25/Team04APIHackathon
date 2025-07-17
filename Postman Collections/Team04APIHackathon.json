@@ -670,7 +670,7 @@
 											"});",
 											"",
 											"let json = pm.response.json();",
-											"pm.environment.set(\"adminToken\", json.token);"
+											"pm.environment.set(\"admin_token\", json.token);"
 										],
 										"type": "text/javascript",
 										"packages": {}
