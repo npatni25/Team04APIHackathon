@@ -2050,7 +2050,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{base_url}}/dietician/patient"
+						"url": "{{base_url}}/patient"
 					},
 					"response": []
 				}
