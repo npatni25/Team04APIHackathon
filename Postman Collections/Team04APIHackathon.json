@@ -2092,7 +2092,7 @@
 							"response": [
 								{
 									"id": "c2a0bafb-31a8-427d-b58c-93022e58542a",
-									"name": "TC_GET_MORB_ADMIN_001_Retrive_all_morbidity_valid bearer token_200_OK",
+									"name": "Retrive all morbidities",
 									"originalRequest": {
 										"method": "GET",
 										"header": [],
