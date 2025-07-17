@@ -789,7 +789,7 @@
 											"pm.test(\"Response body matches expected JSON\", function () {\r",
 											"    let responseBody = pm.response.json();\r",
 											"    let expectedResponseBody = pm.iterationData.get(\"expectedResponseBody\");\r",
-											"    if (responseBody.get(timestamp) != null){\r",
+											"    if (responseBody.hasOwnProperty(\"timestamp\")){\r",
 											"        responseBody.timestamp = \"\";\r",
 											"    }\r",
 											"    pm.expect(responseBody).to.eql(expectedResponseBody);\r",
