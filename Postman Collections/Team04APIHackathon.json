@@ -7,6 +7,11 @@
 	},
 	"item": [
 		{
+			"name": "Dietician Module",
+			"item": [],
+			"id": "9037f836-8ad6-47ba-800a-f4de84b3b7ee"
+		},
+		{
 			"name": "Setup",
 			"item": [
 				{
@@ -132,11 +137,6 @@
 				}
 			],
 			"id": "d9ade4ce-f9e9-4847-a481-c0d2dd1ca4ec"
-		},
-		{
-			"name": "Dietician Module",
-			"item": [],
-			"id": "9037f836-8ad6-47ba-800a-f4de84b3b7ee"
 		},
 		{
 			"name": "Patient Module",
