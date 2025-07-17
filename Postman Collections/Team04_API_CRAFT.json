@@ -1,0 +1,3014 @@
+{
+	"info": {
+		"_postman_id": "0236d80b-87af-455d-80e1-b189b61bb212",
+		"name": "Dietician _API_Team4",
+		"description": "Complete automated flow with Admin login, Dietician creation/login, Patient creation, Reports upload, and test cases.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Setup",
+			"item": [
+				{
+					"name": "Generate Dietician token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "26bb88c0-5e32-4e0e-8eec-efebbe9a1a1c",
+								"exec": [
+									"var json = pm.response.json();",
+									"",
+									"pm.collectionVariables.set('dieticianEmail', json.Email);",
+									"pm.collectionVariables.set('dieticianPassword', json.loginPassword);",
+									"pm.collectionVariables.set('dieticianId', json.id);",
+									"",
+									"console.log('Dietician created. Email: ' + json.Email + ', Password: ' + json.loginPassword + ', dieticianId: ' + json.id);",
+									"",
+									"// ✅ Status code check",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8f74a299-23dc-4b78-b6dc-8cf921c3c9ec",
+								"exec": [
+									"// Generate random 10-digit Contact Number\r",
+									"const randomContact = \"1\" + Math.floor(100000000 + Math.random() * 900000000);\r",
+									"pm.collectionVariables.set(\"ContactNumber\", randomContact);\r",
+									"\r",
+									"// Generate random email\r",
+									"const emailPrefix = \"dietician\" + Math.floor(Math.random() * 10000);\r",
+									"pm.collectionVariables.set(\"Email\", emailPrefix + \"@example.com\");\r",
+									"\r",
+									"// Generate random DOB between 1980 and 1995\r",
+									"function getRandomDOB() {\r",
+									"    const start = new Date(1980, 0, 1);\r",
+									"    const end = new Date(1995, 11, 31);\r",
+									"    const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));\r",
+									"    return dob.toISOString();\r",
+									"}\r",
+									"pm.collectionVariables.set(\"DateOfBirth\", getRandomDOB());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "9e33354c-263c-4a1b-89d3-f4d221ac253d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"MBBS\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"John\",\n  \"HospitalCity\": \"CityName\",\n  \"HospitalName\": \"HospitalName\",\n  \"HospitalPincode\": \"123456\",\n  \"HospitalStreet\": \"StreetName\",\n  \"Lastname\": \"Doe\"\n}"
+						},
+						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician"
+					},
+					"response": []
+				},
+				{
+					"name": "Dietician Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7590bdce-6b1c-4e95-9bb0-2aed7a49fde9",
+								"exec": [
+									"// ✅ Status code check",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let json = pm.response.json();",
+									"pm.collectionVariables.set(\"dieticianToken\", json.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "e557f78c-37ad-41fd-8988-f77e061804fa",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{adminToken}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}\n\n// ✅ Status code check\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});"
+						},
+						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
+					},
+					"response": []
+				}
+			],
+			"id": "d9ade4ce-f9e9-4847-a481-c0d2dd1ca4ec"
+		},
+		{
+			"name": "Dietician",
+			"item": [
+				{
+					"name": "CreateDietician",
+					"item": [
+						{
+							"name": "CreateDietician_TC14_15_AutoGeneratedTD_Password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "23bf1c95-4d63-4cb8-bf52-114f9ae5daaa",
+										"exec": [
+											"// Read scenario name from the current iteration data",
+											"const testCaseId = pm.iterationData.get(\"TestCase\");",
+											"const testCaseName = pm.iterationData.get(\"Name\");",
+											"console.log(`Running Test Case: ${testCaseId} - ${testCaseName}`);",
+											"pm.test(`Executed: ${testCaseId} - ${testCaseName}`, function () {",
+											"    pm.expect(testCaseId).to.not.be.undefined;",
+											"});",
+											"",
+											"//Check if status code is as expected",
+											"pm.test(\"Status code is as expected\", function () {",
+											"    const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"    pm.response.to.have.status(expectedCode);",
+											"});",
+											"",
+											"// Check that 'id' exists and is not null",
+											"pm.test(\"Response has auto-generated ID\", function () {",
+											"    const jsonData = pm.response.json(); ",
+											"    pm.expect(jsonData).to.have.property('id');",
+											"    pm.expect(jsonData.id).to.not.be.null;",
+											"    pm.expect(jsonData.id).to.not.be.undefined;",
+											"    pm.expect(jsonData.id).to.satisfy(id => typeof id === 'string' || typeof id === 'number');",
+											"    console.log(\"Generated ID:\", jsonData.id);",
+											"});",
+											"",
+											"pm.test(\"Response has auto-generated Password\", function () {",
+											"    const jsonData = pm.response.json(); ",
+											"    pm.expect(jsonData).to.have.property('loginPassword');",
+											"    pm.expect(jsonData.loginPassword).to.not.be.null;",
+											"    pm.expect(jsonData.loginPassword).to.not.be.undefined;",
+											"    //pm.expect(jsonData.loginPassword).to.satisfy(loginPassword => typeof loginPassword === 'string' || typeof loginPassword === 'number');",
+											"    console.log(\"Generated Password:\", jsonData.loginPassword);",
+											"});",
+											"",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "55932594-7476-4a6f-bb17-4d6029195d48",
+										"exec": [
+											"// const reqName = pm.iterationData.get(\"requestName\");",
+											"// const testCase = pm.iterationData.get(\"TestCase\");",
+											"",
+											"// if (testCase !== \"TC14\" ) {",
+											"//     console.log(`Skipping iteration with name: ${testCase}`);",
+											"//     Postman.setNextRequest(null)",
+											"// }",
+											"",
+											"const currentRequestName = pm.info.requestName;",
+											"const dataRequestName = pm.iterationData.get(\"requestName\");",
+											"",
+											"// If the current request doesn't match the row's target request, skip it.",
+											"if (currentRequestName !== dataRequestName) {",
+											"    console.log(`Skipping: ${currentRequestName} is not meant for this data row (${dataRequestName})`);",
+											"    Postman.setNextRequest(null); // Skip just this request, not the whole collection",
+											"}",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "467dca79-09f8-4592-a18e-c9ca7000e727",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer{{adminToken1}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+								},
+								"url": "{{base_url}}/dietician"
+							},
+							"response": []
+						},
+						{
+							"name": "fortest",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "23bf1c95-4d63-4cb8-bf52-114f9ae5daaa",
+										"exec": [
+											"pm.test(\"Status code / error message are as expected\", function () {",
+											"    try {",
+											"        const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"        const expectedError = pm.iterationData.get(\"expectedErrorMessage\");",
+											"        if (isNaN(expectedCode)) {",
+											"            throw new Error(\"Expected status code is not a valid number.\");",
+											"        }",
+											"        pm.expect(pm.response.code).to.eql(expectedCode);",
+											"        console.log(`Status code matched: ${expectedCode}`);",
+											"        const responseBody = pm.response.json();",
+											"",
+											"        if (expectedError) {",
+											"            const actualError = responseBody.error || responseBody.message || responseBody.detail || JSON.stringify(responseBody);",
+											"            pm.expect(actualError).to.include(expectedError);",
+											"            console.log(`Error message matched: ${expectedError}`);",
+											"        }",
+											"",
+											"    } catch (err) {",
+											"        console.error(`❌ Test failed: ${err.message}`);",
+											"        console.error(`Response Status: ${pm.response.code}`);",
+											"        console.error(`Expected Status: ${pm.iterationData.get(\"statusCode\")}`);",
+											"        console.error(`Expected Error: ${pm.iterationData.get(\"expectedErrorMessage\")}`);",
+											"        console.error(`Actual Response: ${pm.response.text()}`);",
+											"        throw err; ",
+											"    }",
+											"});",
+											"",
+											"",
+											"",
+											"// pm.test(\"Status code is as expected\", function () {",
+											"//     const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"//     pm.response.to.have.status(expectedCode);",
+											"// });",
+											"",
+											"",
+											"// pm.test(\"Status text is as expected\", function () {",
+											"//     const expectedText = pm.iterationData.get(\"statusText\");",
+											"//     pm.expect(pm.response.status).to.eql(expectedText);",
+											"// });"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "55932594-7476-4a6f-bb17-4d6029195d48",
+										"exec": [
+											"//const reqName = pm.iterationData.get(\"requestName\");",
+											"const testCase = pm.iterationData.get(\"TestCase\");",
+											"",
+											"if (testCase !== \"TC20\" ) {",
+											"    console.log(`Skipping iteration with name: ${testCase}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "6c5aee8b-fa60-4ae7-807b-346367dff96f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer{{adminToken1}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+								},
+								"url": "{{base_url}}/dietician"
+							},
+							"response": []
+						},
+						{
+							"name": "CreateDieticianAll",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "8784b4c1-ea82-4c25-a307-3f5306a8c97b",
+										"exec": [
+											"const reqName = pm.iterationData.get(\"requestName\");",
+											"",
+											"if (reqName !== \"CreateDietician\") {",
+											"    console.log(`Skipping iteration with name: ${reqName}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "409ee34c-efd9-49e4-a4fc-d07ca65fffef",
+										"exec": [
+											"// Read scenario name from the current iteration data",
+											"const testCaseId = pm.iterationData.get(\"TestCase\");",
+											"const testCaseName = pm.iterationData.get(\"Name\");",
+											"console.log(`Running Test Case: ${testCaseId} - ${testCaseName}`);",
+											"pm.test(`Executed: ${testCaseId} - ${testCaseName}`, function () {",
+											"    pm.expect(testCaseId).to.not.be.undefined;",
+											"});",
+											"",
+											"//Check status code and error is as expected",
+											"pm.test(\"Status code / error message are as expected\", function () {",
+											"    try {",
+											"        const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"        const expectedError = pm.iterationData.get(\"expectedErrorMessage\");",
+											"        if (isNaN(expectedCode)) {",
+											"            throw new Error(\"Expected status code is not a valid number.\");",
+											"        }",
+											"        pm.expect(pm.response.code).to.eql(expectedCode);",
+											"        console.log(`Status code matched: ${expectedCode}`);",
+											"        const responseBody = pm.response.json();",
+											"",
+											"        if (expectedError) {",
+											"            const actualError = responseBody.error || responseBody.message || responseBody.detail || JSON.stringify(responseBody);",
+											"            pm.expect(actualError).to.include(expectedError);",
+											"            console.log(`Error message matched: ${expectedError}`);",
+											"        }",
+											"",
+											"    } catch (err) {",
+											"        console.error(`❌ Test failed: ${err.message}`);",
+											"        console.error(`Response Status: ${pm.response.code}`);",
+											"        console.error(`Expected Status: ${pm.iterationData.get(\"statusCode\")}`);",
+											"        console.error(`Expected Error: ${pm.iterationData.get(\"expectedErrorMessage\")}`);",
+											"        console.error(`Actual Response: ${pm.response.text()}`);",
+											"        throw err; ",
+											"    }",
+											"});",
+											"",
+											"",
+											"",
+											"",
+											"// pm.test(\"Status code is as expected\", function () {",
+											"//     const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"//     pm.response.to.have.status(expectedCode);",
+											"// });",
+											"",
+											"",
+											"// pm.test(\"Status text is as expected\", function () {",
+											"//     const expectedText = pm.iterationData.get(\"statusText\");",
+											"//     pm.expect(pm.response.status).to.eql(expectedText);",
+											"// });"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "1fe7f53d-61b3-436f-8a2b-df69940319f7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{adminToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+								},
+								"url": "{{base_url}}/dietician"
+							},
+							"response": []
+						},
+						{
+							"name": "AuthCheck_NonAdminCheck",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "8784b4c1-ea82-4c25-a307-3f5306a8c97b",
+										"exec": [
+											"//const reqName = pm.iterationData.get(\"requestName\");",
+											"const testCase = pm.iterationData.get(\"TestCase\");",
+											"",
+											"if (testCase !== \"TC23\" ) {",
+											"    console.log(`Skipping iteration with name: ${testCase}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "409ee34c-efd9-49e4-a4fc-d07ca65fffef",
+										"exec": [
+											"// Read scenario name from the current iteration data",
+											"const testCaseId = pm.iterationData.get(\"TestCase\");",
+											"const testCaseName = pm.iterationData.get(\"Name\");",
+											"console.log(`Running Test Case: ${testCaseId} - ${testCaseName}`);",
+											"pm.test(`Executed: ${testCaseId} - ${testCaseName}`, function () {",
+											"    pm.expect(testCaseId).to.not.be.undefined;",
+											"});",
+											"",
+											"//Check status code and error is as expected",
+											"pm.test(\"Status code / error message are as expected\", function () {",
+											"    try {",
+											"        const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"        const expectedError = pm.iterationData.get(\"expectedErrorMessage\");",
+											"        if (isNaN(expectedCode)) {",
+											"            throw new Error(\"Expected status code is not a valid number.\");",
+											"        }",
+											"        pm.expect(pm.response.code).to.eql(expectedCode);",
+											"        console.log(`Status code matched: ${expectedCode}`);",
+											"        const responseBody = pm.response.json();",
+											"",
+											"        if (expectedError) {",
+											"            const actualError = responseBody.error || responseBody.message || responseBody.detail || JSON.stringify(responseBody);",
+											"            pm.expect(actualError).to.include(expectedError);",
+											"            console.log(`Error message matched: ${expectedError}`);",
+											"        }",
+											"",
+											"    } catch (err) {",
+											"        console.error(`❌ Test failed: ${err.message}`);",
+											"        console.error(`Response Status: ${pm.response.code}`);",
+											"        console.error(`Expected Status: ${pm.iterationData.get(\"statusCode\")}`);",
+											"        console.error(`Expected Error: ${pm.iterationData.get(\"expectedErrorMessage\")}`);",
+											"        console.error(`Actual Response: ${pm.response.text()}`);",
+											"        throw err; ",
+											"    }",
+											"});",
+											"",
+											"",
+											"",
+											"// pm.test(\"Status code is as expected\", function () {",
+											"//     const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"//     pm.response.to.have.status(expectedCode);",
+											"// });",
+											"",
+											"",
+											"// pm.test(\"Status text is as expected\", function () {",
+											"//     const expectedText = pm.iterationData.get(\"statusText\");",
+											"//     pm.expect(pm.response.status).to.eql(expectedText);",
+											"// });"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "6b9c2645-d142-4a37-a36a-c33d06bdf9d6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+								},
+								"url": "{{base_url}}/dietician"
+							},
+							"response": []
+						}
+					],
+					"id": "3488c536-7744-413b-a8aa-9394b0dcb367"
+				},
+				{
+					"name": "UpdateDietician",
+					"item": [
+						{
+							"name": "fortest Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "23bf1c95-4d63-4cb8-bf52-114f9ae5daaa",
+										"exec": [
+											"pm.test(\"Status code / error message are as expected\", function () {",
+											"    try {",
+											"        const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"        const expectedError = pm.iterationData.get(\"expectedErrorMessage\");",
+											"        if (isNaN(expectedCode)) {",
+											"            throw new Error(\"Expected status code is not a valid number.\");",
+											"        }",
+											"        pm.expect(pm.response.code).to.eql(expectedCode);",
+											"        console.log(`Status code matched: ${expectedCode}`);",
+											"        const responseBody = pm.response.json();",
+											"",
+											"        if (expectedError) {",
+											"            const actualError = responseBody.error || responseBody.message || responseBody.detail || JSON.stringify(responseBody);",
+											"            pm.expect(actualError).to.include(expectedError);",
+											"            console.log(`Error message matched: ${expectedError}`);",
+											"        }",
+											"",
+											"    } catch (err) {",
+											"        console.error(`❌ Test failed: ${err.message}`);",
+											"        console.error(`Response Status: ${pm.response.code}`);",
+											"        console.error(`Expected Status: ${pm.iterationData.get(\"statusCode\")}`);",
+											"        console.error(`Expected Error: ${pm.iterationData.get(\"expectedErrorMessage\")}`);",
+											"        console.error(`Actual Response: ${pm.response.text()}`);",
+											"        throw err; ",
+											"    }",
+											"});",
+											"",
+											"",
+											"",
+											"// pm.test(\"Status code is as expected\", function () {",
+											"//     const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"//     pm.response.to.have.status(expectedCode);",
+											"// });",
+											"",
+											"",
+											"// pm.test(\"Status text is as expected\", function () {",
+											"//     const expectedText = pm.iterationData.get(\"statusText\");",
+											"//     pm.expect(pm.response.status).to.eql(expectedText);",
+											"// });"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "55932594-7476-4a6f-bb17-4d6029195d48",
+										"exec": [
+											"//const reqName = pm.iterationData.get(\"requestName\");",
+											"const testCase = pm.iterationData.get(\"TestCase\");",
+											"",
+											"if (testCase !== \"TC46\" ) {",
+											"    console.log(`Skipping iteration with name: ${testCase}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "4d05b2ed-4640-4be0-bca2-cb38c97a6c37",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer{{adminToken1}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+								},
+								"url": "{{base_url}}{{endpoint}}"
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateDietician_PositiveandNegativeSceanrios",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c90a8314-088d-4915-a50b-6d18fe006ca4",
+										"exec": [
+											"// Read scenario name from the current iteration data",
+											"const testCaseId = pm.iterationData.get(\"TestCase\");",
+											"const testCaseName = pm.iterationData.get(\"Name\");",
+											"console.log(`Running Test Case: ${testCaseId} - ${testCaseName}`);",
+											"pm.test(`Executed: ${testCaseId} - ${testCaseName}`, function () {",
+											"    pm.expect(testCaseId).to.not.be.undefined;",
+											"});",
+											"",
+											"//Verify status code and or error",
+											"pm.test(\"Status code and/or error message are as expected\", function () {",
+											"    try {",
+											"        const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
+											"        const expectedError = pm.iterationData.get(\"expectedErrorMessage\");",
+											"        if (isNaN(expectedCode)) {",
+											"            throw new Error(\"Expected status code is not a valid number.\");",
+											"        }",
+											"        pm.expect(pm.response.code).to.eql(expectedCode);",
+											"        console.log(`Status code matched: ${expectedCode}`);",
+											"        const responseBody = pm.response.json();",
+											"",
+											"        if (expectedError) {",
+											"            const actualError = responseBody.error || responseBody.message || responseBody.detail || JSON.stringify(responseBody);",
+											"            pm.expect(actualError).to.include(expectedError);",
+											"            console.log(`Error message matched: ${expectedError}`);",
+											"        }",
+											"",
+											"    } catch (err) {",
+											"        console.error(`❌ Test failed: ${err.message}`);",
+											"        console.error(`Response Status: ${pm.response.code}`);",
+											"        console.error(`Expected Status: ${pm.iterationData.get(\"statusCode\")}`);",
+											"        console.error(`Expected Error: ${pm.iterationData.get(\"expectedErrorMessage\")}`);",
+											"        console.error(`Actual Response: ${pm.response.text()}`);",
+											"        throw err; ",
+											"    }",
+											"});",
+											"",
+											"//verify if respose body displayed data as expected..",
+											"// const keys = [",
+											"//   \"Firstname\", \"Lastname\", \"DateOfBirth\", \"Email\", ",
+											"//   \"ContactNumber\", \"Education\", \"HospitalName\", ",
+											"//   \"HospitalCity\", \"HospitalStreet\", \"HospitalPincode\"",
+											"// ];",
+											"// let response = pm.response.json();",
+											"// pm.test(\"All fields match expected values from data file\", function () {",
+											"//     keys.forEach(key => {",
+											"//         const expected = pm.iterationData.get(key);",
+											"//         pm.expect(response[key]).to.eql(expected, `Mismatch in ${key}`);",
+											"//     });",
+											"// });",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "90161c4c-b04e-45ca-b1e4-497468207854",
+										"exec": [
+											"const reqName = pm.iterationData.get(\"requestName\");",
+											"",
+											"if (reqName !== \"UpdateDietician\") {",
+											"    console.log(`Skipping iteration with name: ${reqName}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "3fdd0543-18f8-4497-acb2-f2a4a011c424",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+								},
+								"url": "{{base_url}}{{endpoint}}"
+							},
+							"response": []
+						}
+					],
+					"id": "f6cdeb72-3f88-4616-8c94-2ddc181dae67"
+				},
+				{
+					"name": "RetrieveDietician_admin",
+					"item": [
+						{
+							"name": "GetDieticianUsingDieticianRole",
+							"item": [
+								{
+									"name": "TC05_DieticianById_ValidToken",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);\r",
+													"\r",
+													"let method = pm.iterationData.get(\"method\");\r",
+													"if (method) pm.request.method = method.toUpperCase();\r",
+													"\r",
+													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+													"\r",
+													"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
+													"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+													"\r",
+													"\r",
+													"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
+													"\r",
+													"if (authType === \"Dietician Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+													"    });\r",
+													"} else if (authType === \"Admin Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+													"    });\r",
+													"} else if (authType === \"Expired Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+													"    });\r",
+													"} "
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"console.log(pm.iterationData.get(\"scenarioName\"));\r",
+													"console.log(\"Expected Status Code :: \" + pm.iterationData.get(\"responseCode\"));\r",
+													"\r",
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response body matches expected JSON\", function () {\r",
+													"    let responseBody = pm.response.json();\r",
+													"    let expectedResponseBody = pm.iterationData.get(\"expectedResponseBody\");\r",
+													"    if (responseBody.hasOwnProperty(\"timestamp\")){\r",
+													"        responseBody.timestamp = \"\";\r",
+													"    }\r",
+													"    pm.expect(responseBody).to.eql(expectedResponseBody);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "0d515d62-9a3b-47e5-bff4-d0178c52aea1",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{dietician_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "TC06_DieticianById_InvalidMethod",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"// Set dietician id variable from Json\r",
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(405);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "0ad26857-bc05-4912-82a9-acff86181af4",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{admin_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "TC07_DieticianById_NoAuth",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"// Set dietician id variable from Json\r",
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(401);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "fa2451a0-e52a-43b4-acd8-c718f3036cad",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "TC08_DieticianById_InvalidToken",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"// Set dietician id variable from Json\r",
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(401);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "8061030a-4f61-4062-bc93-b4526a653847",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "test"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								}
+							],
+							"id": "0a84815d-0a1f-47a8-98bc-f512bc207d3d"
+						},
+						{
+							"name": "GetDieticianUsingAdminRole",
+							"item": [
+								{
+									"name": "TC01_DieticianById_ValidToken",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"// Set dietician id variable from Json\r",
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);\r",
+													"\r",
+													"let method = pm.iterationData.get(\"method\");\r",
+													"if (method) pm.request.method = method.toUpperCase();\r",
+													"\r",
+													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+													"\r",
+													"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
+													"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+													"\r",
+													"\r",
+													"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
+													"\r",
+													"if (authType === \"Dietician Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+													"    });\r",
+													"} else if (authType === \"Admin Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+													"    });\r",
+													"} else if (authType === \"Expired Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+													"    });\r",
+													"} "
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"console.log(pm.iterationData.get(\"scenarioName\"));\r",
+													"console.log(\"Expected Status Code :: \" + pm.iterationData.get(\"responseCode\"));\r",
+													"\r",
+													"\r",
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response body matches expected JSON\", function () {\r",
+													"    let responseBody = pm.response.json();\r",
+													"    let expectedResponseBody = pm.iterationData.get(\"expectedResponseBody\");\r",
+													"    if (responseBody.hasOwnProperty(\"timestamp\")){\r",
+													"        responseBody.timestamp = \"\";\r",
+													"    }\r",
+													"    pm.expect(responseBody).to.eql(expectedResponseBody);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "22b1f966-0716-49fd-905b-e9bbbad9563d",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{admin_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "TC04_DieticianById_InvalidMethod",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"// Set dietician id variable from Json\r",
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(405);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "f96af19d-3c4a-48d8-90b1-17d27130e462",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{admin_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "TC02_DieticianById_NoAuth",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"// Set dietician id variable from Json\r",
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(401);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "083c6893-aded-446d-a304-965f4ff242c6",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "TC03_DieticianById_InvalidToken",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"// Set dietician id variable from Json\r",
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(401);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "7383235d-553c-4c5e-a061-6c4e8d042b90",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "test"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								}
+							],
+							"id": "fdf1a354-a585-4ece-9818-f96ed22e5dbb"
+						},
+						{
+							"name": "GetAllDieticianUsingDieticianRole",
+							"item": [
+								{
+									"name": "TC01_GET_AllDieticians",
+									"id": "d4054abf-7128-497f-b786-2be419c5be0a",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{dieticianToken}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician"
+									},
+									"response": []
+								}
+							],
+							"id": "f8a7f2cc-5bd0-49a6-bb50-1c18d2e63428"
+						},
+						{
+							"name": "Retrieve All Dietician",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f045ba4c-3e56-4b48-b823-790251022815",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Text is OK\", function () {",
+											"    pm.response.to.have.status(\"OK\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "51420741-b602-4a18-84a4-877cb9424940",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken1}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/dietician"
+							},
+							"response": []
+						},
+						{
+							"name": "Retireve All Dietician with No Auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "824ebe12-568c-416f-b2ba-389ea6b101f8",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "cd1016b4-3733-4208-8735-722dcaa7ee30",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken1}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/dietician"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "8904ac10-5f51-46b6-9f11-8e35309dd00e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken1}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
+								},
+								"url": "{{base_url}}/dietician"
+							},
+							"response": []
+						}
+					],
+					"id": "a1129c92-4d94-48fc-b3b5-fb9103565a25"
+				}
+			],
+			"id": "fd60e995-46dd-4476-8e20-ce2f18ddcb65"
+		},
+		{
+			"name": "Patient Module",
+			"item": [
+				{
+					"name": "Create Patient_bs",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e4147433-9539-46cf-8387-0bb568b31842",
+								"exec": [
+									"// let patientId = pm.iterationData.get(\"patientId\");\r",
+									"// pm.variables.set(\"patientId\", patientId);\r",
+									"    // pm.environment.set('patientId', json.patientId);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// //  Status code check\r",
+									"// pm.test(\"Status code is 201\", function () {\r",
+									"//     pm.response.to.have.status(200);\r",
+									"// });\r",
+									"\r",
+									"// // Generate random Contact Number starting with 2\r",
+									"// const contactNumber = \"2\" + Math.floor(100000000 + Math.random() * 900000000);\r",
+									"// pm.environment.set(\"PatientContactNumber\", contactNumber);\r",
+									"\r",
+									"// // Generate unique email\r",
+									"// const emailPrefix = \"jane\" + Math.floor(Math.random() * 10000);\r",
+									"// pm.environment.set(\"PatientEmail\", `${emailPrefix}@example.com`);\r",
+									"\r",
+									"// // Generate random DOB between 1985 and 2002\r",
+									"// function getRandomDOB() {\r",
+									"//     const start = new Date(1985, 0, 1);\r",
+									"//     const end = new Date(2002, 11, 31);\r",
+									"//     const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));\r",
+									"//     return dob.toISOString().split('T')[0];\r",
+									"// }\r",
+									"// pm.environment.set(\"PatientDOB\", getRandomDOB());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "209ee69b-8ab9-4038-9631-0caa7d2659a8",
+								"exec": [
+									"// Assuming patientId comes in response",
+									"var json = pm.response.json();",
+									"",
+									"if (json.patientId) {",
+									"    pm.collectionVariables.set('patientId', json.patientId);",
+									"    console.log('Patient created with ID: ' + json.patientId);",
+									"} else {",
+									"    console.log('Patient ID not found in response');",
+									"}",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"// // Assuming patientId comes in response",
+									"// var json = pm.response.json();",
+									"// if (json.patientId) {",
+									"//     pm.environment.set('patientId', json.patientId);",
+									"//     console.log('Patient created with ID: ' + json.patientId);",
+									"// } else {",
+									"//     console.log('Patient ID not found in response');",
+									"// }",
+									"// pm.test(\"Status code is 200\", function () {",
+									"//     pm.response.to.have.status(200);",
+									"// });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "5ba4a19f-dd11-4d75-a862-7f7173e82aed",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{dieticianToken}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dieticianToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "text",
+									"value": ""
+								},
+								{
+									"key": "patientInfo",
+									"value": "{\"FirstName\": \"{{FirstName}}\",\"LastName\": \"{{LastName}}\",\"ContactNumber\": \"{{ContactNumber}}\",\"Email\": \"{{Email}}\",\"Allergy\": \"{{Allergy}}\",\"FoodPreference\": \"{{FoodPreference}}\",\"CuisineCategory\": \"{{CuisineCategory}}\",\"DateOfBirth\": \"{{DateOfBirth}}\" }",
+									"type": "text",
+									"uuid": "9b8c3f63-6c34-4ac8-b6ab-a7e8c340583d"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient",
+							"protocol": "https",
+							"host": [
+								"dietician-july-api-hackathon-80f2590665cc",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"dietician",
+								"patient"
+							],
+							"query": [
+								{
+									"key": "patientInfo",
+									"value": "%7B \"FirstName\": \"{{FirstName}}\",\"LastName\": \"{{LastName}}\",\"ContactNumber\": \"{{ContactNumber}}\",\"Email\": \"{{Email}}\",\"Allergy\": \"{{Allergy}}\",\"FoodPreference\": \"{{FoodPreference}}\",\"CuisineCategory\": \"{{CuisineCategory}}\",\"DateOfBirth\": \"{{DateOfBirth}}\" %7D",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update_Ptient_bs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a663803c-d372-43ee-820e-1e727a62382c",
+								"exec": [
+									"let patientId = pm.iterationData.get(\"patientId\");\r",
+									"pm.variables.set(\"patientId\", patientId);\r",
+									"\r",
+									"\r",
+									"//  Status code check\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "ce22aeab-3c35-4803-bb36-95b77888ec28",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{dieticianToken}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "patientInfo",
+									"value": "{\n\"FirstName\": \"{{FirstName}}\",\n\"LastName\": \"{{LastName}}\",\n\"ContactNumber\": \"{{ContactNumber}}\",\n\"Email\": \"{{Email}}\",\n\"Allergy\": \"{{Allergy}}\",\n\"FoodPreference\": \"{{FoodPreference}}\",\n\"CuisineCategory\": \"{{CuisineCategory}}\",\n\"DateOfBirth\": \"{{DateOfBirth}}\"\n}",
+									"type": "text",
+									"uuid": "b4a91f02-0f46-44bd-902b-1c717bc9c124"
+								},
+								{
+									"key": "file",
+									"value": "",
+									"type": "text",
+									"uuid": "6f3964fb-206d-480c-b3a4-6930a20bba50"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient/{{patientId}}",
+							"protocol": "https",
+							"host": [
+								"dietician-july-api-hackathon-80f2590665cc",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"dietician",
+								"patient",
+								"{{patientId}}"
+							],
+							"query": [
+								{
+									"key": "patientId",
+									"value": null,
+									"type": "text",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// ✅ Status code check",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// ✅ Schema validation (example - adjust per endpoint)",
+									"const schema = {",
+									"  type: \"object\",",
+									"  properties: {",
+									"    token: { type: \"string\" },",
+									"    userId: { type: \"string\" },",
+									"    email: { type: \"string\" }",
+									"  },",
+									"  required: [\"token\", \"userId\", \"email\"]",
+									"};",
+									"pm.test(\"Schema is valid\", function () {",
+									"  pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"id": "b0321dd6-c1dc-41c0-a632-a8c71b3e5198"
+							}
+						}
+					],
+					"id": "16614059-d800-4c62-861c-492c5e882686",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{dieticianToken}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dieticianToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "patientInfo",
+									"value": "{\n  \"FirstName\": \"Jane\",\n  \"LastName\": \"Smith\",\n  \"ContactNumber\": \"9916543210\",\n  \"Email\": \"jane.smiiith319@example.com\",\n  \"Allergy\": \"NONE\",\n  \"FoodPreference\": \"Vegetarian\",\n  \"CuisineCategory\": \"Indian\",\n  \"DateOfBirth\": \"1993-05-20\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/chand/Downloads/Sample reports-20250523T164632Z-1-001 (1)/Sample reports/HyperThyroid_Report_final.pdf"
+								},
+								{
+									"key": "vitals",
+									"value": "{\n  \"Weight\": 70.0,\n  \"Height\": 170.0,\n  \"Temperature\": 36.5,\n  \"SP\": 120,\n  \"DP\": 80\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient/newReports/{{patientId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Patient Morbidity Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3ec4ea33-28bf-40c6-95ca-4686c6d2276f",
+								"exec": [
+									"const reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const myRequestName = \"Get Patient Morbidity Details\"; \r",
+									"\r",
+									"\r",
+									"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
+									"\r",
+									"\r",
+									"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
+									"if (method) pm.request.method = method.toUpperCase();\r",
+									"\r",
+									"\r",
+									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
+									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+									"\r",
+									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
+									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+									"\r",
+									"\r",
+									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
+									"\r",
+									"if (authType === \"Dietician Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Admin Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Expired Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+									"    });\r",
+									"} else if (authType === \"No Auth\") {\r",
+									"    pm.request.headers.remove(\"Authorization\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "8cdc748b-e3f2-497c-bfb6-33f6862142ed",
+								"exec": [
+									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));",
+									"const expectedStatusText = pm.iterationData.get(\"statusText\");",
+									"",
+									"pm.test(\" Status Code matches\", function () {",
+									"    pm.response.to.have.status(expectedStatus);",
+									"});",
+									"",
+									"pm.test(\" Status Text matches\", function () {",
+									"    pm.expect(pm.response.status).to.eql(expectedStatusText);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "84e92011-f67c-4bee-a4ea-235d527e1d9d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dieticianToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}{{dynamicEndpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Patient File by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "29956cf0-d89d-4ee8-a3ee-ef0f41cd5e3a",
+								"exec": [
+									"const reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const myRequestName = \"Retrieve Patient File by ID\"; \r",
+									"\r",
+									"\r",
+									"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
+									"\r",
+									"\r",
+									"let method = pm.iterationData.get(\"method\"); //Set the HTTP method from data file\r",
+									"if (method) {\r",
+									"    pm.request.method = method.toUpperCase();\r",
+									"}\r",
+									"\r",
+									"\r",
+									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; //Get the endpoint and replace any {{placeholders}} from collection variables\r",
+									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+									"\r",
+									"\r",
+									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\"); // Clean up leading slashes to avoid duplication\r",
+									"\r",
+									"\r",
+									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint); // Set as dynamicEndpoint variable\r",
+									"\r",
+									"\r",
+									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Handle Authorization header based on authType from JSON\r",
+									"\r",
+									"if (authType === \"Dietician Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Admin Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Expired Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+									"    });\r",
+									"} else if (authType === \"No Auth\") {\r",
+									"    \r",
+									"    pm.request.headers.remove(\"Authorization\"); // Remove Authorization header completely\r",
+									"}\r",
+									"\r",
+									"\r",
+									"console.log(\"Request method:\", method); //  Debug logs (optional)\r",
+									"console.log(\"Raw endpoint:\", rawEndpoint);\r",
+									"console.log(\"Final dynamic endpoint:\", pm.variables.get(\"dynamicEndpoint\"));\r",
+									"console.log(\"Auth Type:\", authType);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0c971508-5e0c-4b30-b736-3d05fc1ed300",
+								"exec": [
+									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));",
+									"const expectedStatusText = pm.iterationData.get(\"statusText\");",
+									"",
+									"pm.test(\"Status Code matches\", function () {",
+									"    pm.response.to.have.status(expectedStatus);",
+									"});",
+									"",
+									"pm.test(\"Status Text matches\", function () {",
+									"    pm.expect(pm.response.status).to.eql(expectedStatusText);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "aadac4c8-16e7-46b2-84f6-7c03d48a257f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dieticianToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}{{dynamicEndpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get_All_Patient_bs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a3c325e-4477-4465-a331-4919d5f691fb",
+								"exec": [
+									"const response = pm.response.json();\r",
+									"console.log(response);\r",
+									"\r",
+									"pm.test(\"Validating Status Code\", ()=> {\r",
+									"    pm.expect(pm.response.code).to.eql(pm.variables.get(\"statusCode\"));\r",
+									"});\r",
+									"\r",
+									"const jsonSchema = {\r",
+									"   \"type\": \"array\",\r",
+									"  \"items\": [\r",
+									"    {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"patientId\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"FirstName\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"LastName\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"ContactNumber\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"Email\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"Allergy\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"FoodPreference\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"CuisineCategory\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"FileMorbidity\": {\r",
+									"          \"type\": \"object\",\r",
+									"          \"properties\": {\r",
+									"            \"66afef4ca2b35b78f82f7b4a\": {\r",
+									"              \"type\": \"object\",\r",
+									"              \"properties\": {\r",
+									"                \"T4\": {\r",
+									"                  \"type\": \"string\"\r",
+									"                },\r",
+									"                \"TSH\": {\r",
+									"                  \"type\": \"string\"\r",
+									"                }\r",
+									"              },\r",
+									"              \"required\": [\r",
+									"                \"T4\",\r",
+									"                \"TSH\"\r",
+									"              ]\r",
+									"            }\r",
+									"          },\r",
+									"          \"required\": [\r",
+									"            \"66afef4ca2b35b78f82f7b4a\"\r",
+									"          ]\r",
+									"        },\r",
+									"        \"FileMorbidityCondition\": {\r",
+									"          \"type\": \"object\",\r",
+									"          \"properties\": {\r",
+									"            \"66afef4ca2b35b78f82f7b4a\": {\r",
+									"              \"type\": \"string\"\r",
+									"            }\r",
+									"          },\r",
+									"          \"required\": [\r",
+									"            \"66afef4ca2b35b78f82f7b4a\"\r",
+									"          ]\r",
+									"        },\r",
+									"        \"DateOfBirth\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"DieticianId\": {\r",
+									"          \"type\": \"integer\"\r",
+									"        },\r",
+									"        \"Vitals\": {\r",
+									"          \"type\": \"object\",\r",
+									"          \"properties\": {\r",
+									"            \"66afef4ca2b35b78f82f7b4a\": {\r",
+									"              \"type\": \"object\",\r",
+									"              \"properties\": {\r",
+									"                \"Weight\": {\r",
+									"                  \"type\": \"number\"\r",
+									"                },\r",
+									"                \"Height\": {\r",
+									"                  \"type\": \"number\"\r",
+									"                },\r",
+									"                \"Temperature\": {\r",
+									"                  \"type\": \"number\"\r",
+									"                },\r",
+									"                \"SP\": {\r",
+									"                  \"type\": \"integer\"\r",
+									"                },\r",
+									"                \"DP\": {\r",
+									"                  \"type\": \"integer\"\r",
+									"                }\r",
+									"              },\r",
+									"              \"required\": [\r",
+									"                \"Weight\",\r",
+									"                \"Height\",\r",
+									"                \"Temperature\",\r",
+									"                \"SP\",\r",
+									"                \"DP\"\r",
+									"              ]\r",
+									"            }\r",
+									"          },\r",
+									"          \"required\": [\r",
+									"            \"66afef4ca2b35b78f82f7b4a\"\r",
+									"          ]\r",
+									"        },\r",
+									"        \"LastVisitDate\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"patientId\",\r",
+									"        \"FirstName\",\r",
+									"        \"LastName\",\r",
+									"        \"ContactNumber\",\r",
+									"        \"Email\",\r",
+									"        \"Allergy\",\r",
+									"        \"FoodPreference\",\r",
+									"        \"CuisineCategory\",\r",
+									"        \"FileMorbidity\",\r",
+									"        \"FileMorbidityCondition\",\r",
+									"        \"DateOfBirth\",\r",
+									"        \"DieticianId\",\r",
+									"        \"Vitals\",\r",
+									"        \"LastVisitDate\"\r",
+									"      ]\r",
+									"    }\r",
+									"  ]\r",
+									"}\r",
+									"if(pm.response.code === 200)\r",
+									"{\r",
+									" pm.test('Status String is OK', () => {\r",
+									"pm.response.to.have.status(\"OK\");})\r",
+									"\r",
+									"    // pm.test(\"Verify JSON Schema\", ()=> {\r",
+									"    //    pm.response.to.have.jsonSchema(jsonSchema)\r",
+									"    //  });\r",
+									"    \r",
+									"}     \r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Content-Type header is application/json\", ()=>{\r",
+									" pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');\r",
+									"});\r",
+									"pm.test('Validating Response is not NULL', function () {\r",
+									"pm.expect(response).to.not.equal(null);})\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "8348a814-a7db-45a4-a4e1-c7eabf5bc5bb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{dieticianToken}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient"
+					},
+					"response": []
+				}
+			],
+			"id": "3756d598-3916-41fb-a02a-8e2e7f6946cd"
+		},
+		{
+			"name": "Morbidity",
+			"item": [
+				{
+					"name": "ADMIN role",
+					"item": [
+						{
+							"name": "TC_GET_MORB_ADMIN_001_Retrive_all_morbidity_valid bearer token_200_OK",
+							"id": "6f2faebd-7137-4912-a616-9970b1a7d948",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_002_Retrive_all_morbidity_Invalid bearer token_401_Unauthorized",
+							"id": "ba9396bb-f5d3-4dc0-90c6-c40462d36328",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_003_Retrive_all_morbidity_Invalid baseURL_404_Not Found",
+							"id": "73a70bc4-864f-4d8f-ad64-d71023220074",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_POST_MORB_ADMIN_004_Retrive_all_morbidity_Invalid Method_400_Bad Request",
+							"id": "29c35a10-2b56-4448-8b65-cbdf780c9e91",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_005_Retrive_all_morbidity_Invalid End point_404_Not Found",
+							"id": "51caea3c-11c4-4c20-b771-05af482fc02c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morb"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_006_Retrive_all_morbidity_valid_test name_200_OK",
+							"id": "143e41c9-c4dd-4db8-a68c-0ba62d994ae1",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_007_Retrive_all_morbidity_partial_test name_200_OK",
+							"id": "39b053e2-4029-49b0-b766-8c98b93f9f60",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_008_Retrive_all_morbidity_Numbers in test name_404_Not Found",
+							"id": "53a404b5-4b83-4b9c-8924-391f0ef89fc6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_009_Retrive_morbidity_Lowercase letters in test name_200_OK",
+							"id": "e8d9f9cb-dfb0-43ee-a468-002563c82def",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/blood pressure"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_010_Retrive_morbidity_Null/blank in test name_200_OK",
+							"id": "ea6045e0-391b-47e8-9fea-9acea554a27d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{admin_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/blood pressure"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_011_Retrive_morbidity_spcl charac in test name_404_Not Found",
+							"id": "26669c23-52c1-4a31-bdfc-46f47f3e91fe",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/@#bloodpressure"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_ADMIN_012_Retrive_morbidity_ invalid test name_404_Not Found",
+							"id": "04d860ad-4ecc-45d7-8d46-e504e0793d92",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/morbidity/bp"
+							},
+							"response": []
+						}
+					],
+					"id": "87f83aed-4133-420a-9576-8fdba39fdd35"
+				},
+				{
+					"name": "Dietcian role",
+					"item": [
+						{
+							"name": "TC_GET_MORB_DIET_001_GET _all morbidity_valid bearer token_200_OK",
+							"id": "2627ff02-ef8b-4493-89c9-e9251b00ca09",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_002_GET_all morbidity_invalid bearer token_401_Unauthorized",
+							"id": "55f35a3e-a451-45dc-9fe7-5a2b39a17e99",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}00"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_003_GET_all morbidity_invalid base URL_404_Not Found",
+							"id": "162debeb-76f2-4748-b482-895fa6af9973",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon80f2590665cc.herokuapp.com/dietician/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_POST_MORB_DIET_004_POST_all morbidity_invalid method_400_Bad Request",
+							"id": "b45a3218-ac9e-4996-b5b3-4c0e1ca5fdc1",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_005_GET_all morbidity_invalid endpoint_404_Not found",
+							"id": "0420821a-a3b2-4d24-92ad-b12442e01698",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbdity"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_006_Retrieve morbidity with valid test name_200_OK",
+							"id": "0f55f1cf-133e-48c3-b3a6-37045f056dda",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/blood pressure"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_007_Retrieve morbidity with partial test name_200_OK",
+							"id": "672b2c37-4883-4a7f-8cbb-bf519537c33b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/blood "
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_008_Retrieve morbidity with numbers in test name_404_Not Found",
+							"id": "2d7d4291-5737-446d-b1e9-e47fe0761945",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_009_Retrieve_morbidity_Lowercase letters _test name_200_OK",
+							"id": "7041eebe-4c1d-4078-9327-093df619eb4f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/hba1c"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_010_Retrieve_morbidity_Null/Blank_test name_200_OK",
+							"id": "41fc4315-4711-4c0f-ba06-2efd0905ef10",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/ "
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_011_Retrieve_morbidity_spcl characters _test name_404_Not Found",
+							"id": "ce54ed81-dd48-4f14-aa79-8bc72a000339",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/@#"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_GET_MORB_DIET_012_Retrieve_morbidity_invalid/non-existant_test name_404_Not Found",
+							"id": "5f3df44d-66f3-49d4-bb3c-a667fab960d0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{dieticianToken}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/morbidity/pregnancy"
+							},
+							"response": []
+						}
+					],
+					"id": "d66bffcd-ffb5-4e5a-9590-38cc2630ec37"
+				}
+			],
+			"id": "43ee67dd-3ba7-4336-bf2b-aa2419ec9bfc"
+		},
+		{
+			"name": "Delete and CleanUp",
+			"item": [
+				{
+					"name": "DeleteDieticianByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "63689547-2c1c-49b9-a0dd-5e615b7a04ca",
+								"exec": [
+									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));\r",
+									"const expectedStatusText = pm.iterationData.get(\"statusText\");\r",
+									"\r",
+									"pm.test(\"Status Code matches\", function () {\r",
+									"    pm.response.to.have.status(expectedStatus);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status Text matches\", function () {\r",
+									"    pm.expect(pm.response.status).to.eql(expectedStatusText);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "f05a5786-f372-4dfb-9dd6-be3206f9108c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/dietician/{{dieticianId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Patient by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "df7faa82-642d-4aaf-a301-33762a4badfb",
+								"exec": [
+									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));",
+									"const expectedStatusText = pm.iterationData.get(\"statusText\");",
+									"",
+									"pm.test(\"Status Code matches\", function () {",
+									"    pm.response.to.have.status(expectedStatus);",
+									"});",
+									"",
+									"pm.test(\"Status Text matches\", function () {",
+									"    pm.expect(pm.response.status).to.eql(expectedStatusText);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7e40c849-b4cf-42c0-9214-97f5ffc8d9d0",
+								"exec": [
+									"const reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const myRequestName = \"Delete Patient by ID\"; \r",
+									"\r",
+									"\r",
+									"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
+									"\r",
+									" \r",
+									"let method = pm.iterationData.get(\"method\"); // Set HTTP method dynamically\r",
+									"if (method) pm.request.method = method.toUpperCase();\r",
+									"\r",
+									"\r",
+									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Get and substitute dynamic endpoint from JSON data\r",
+									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\"); // clean leading slashes\r",
+									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+									"\r",
+									"\r",
+									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Handle Authorization by role using collection variables\r",
+									"\r",
+									"if (authType === \"Dietician Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Admin Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Expired Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+									"    });\r",
+									"} else if (authType === \"No Auth\") {\r",
+									"    pm.request.headers.remove(\"Authorization\");\r",
+									"}\r",
+									"\r",
+									"\r",
+									"console.log(\"Scenario:\", pm.iterationData.get(\"scenario\")); // Log for debugging\r",
+									"console.log(\"Method:\", method);\r",
+									"console.log(\"Auth Type:\", authType);\r",
+									"console.log(\"Final Endpoint:\", substitutedEndpoint);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "3d5c1a23-9ea4-4a93-8a06-af2f752668f5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{dieticianToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}{{dynamicEndpoint}}"
+					},
+					"response": []
+				}
+			],
+			"id": "1cc4e5b6-68de-4bd4-b355-4c8deb1e1a5c"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c762adf7-0e43-4131-b215-d215fd7ab127",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"//Login as Admin and create Token\r",
+					"const LOGIN_URL = 'https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login';\r",
+					"const ADMIN_EMAIL = 'Team404@gmail.com';       \r",
+					"const ADMIN_PASSWORD = 'test';             \r",
+					"\r",
+					"function isTokenExpired() {\r",
+					"    const expiry = pm.environment.get('adminTokenExpiresAt');\r",
+					"    if (!expiry) return true;\r",
+					"    const now = new Date().getTime();\r",
+					"    return now >= parseInt(expiry);\r",
+					"}\r",
+					"if (!pm.environment.get('adminToken') || isTokenExpired()) {\r",
+					"    console.log('Logging in to refresh admin token...');\r",
+					"\r",
+					"    pm.sendRequest({\r",
+					"        url: LOGIN_URL,\r",
+					"        method: 'POST',\r",
+					"        header: {\r",
+					"            'Content-Type': 'application/json'\r",
+					"        },\r",
+					"        body: {\r",
+					"            mode: 'raw',\r",
+					"            raw: JSON.stringify({\r",
+					"                userLoginEmail: ADMIN_EMAIL,\r",
+					"                password: ADMIN_PASSWORD\r",
+					"            })\r",
+					"        }\r",
+					"    }, function (err, res) {\r",
+					"        if (err) {\r",
+					"            console.error('Login request failed:', err);\r",
+					"        } else {\r",
+					"            const json = res.json();\r",
+					"\r",
+					"            if (json.token) {\r",
+					"                const token = json.token;\r",
+					"                const expiresInMillis = 60 * 60 * 1000; // ⏰ 1 hour (customize if needed)\r",
+					"\r",
+					"                // Save token and expiry\r",
+					"                pm.environment.set('adminToken', token);\r",
+					"                pm.environment.set('adminTokenExpiresAt', (new Date().getTime() + expiresInMillis).toString());\r",
+					"\r",
+					"                console.log('Token saved:', token);\r",
+					"            } else {\r",
+					"                console.warn('Token not found in login response:', json);\r",
+					"            }\r",
+					"        }\r",
+					"    });\r",
+					"} else {\r",
+					"    console.log('Valid token found, skipping login');\r",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c60dffc4-cb38-45ad-8f45-57b5542a0fe7",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "adminEmail",
+			"value": "Team404@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "adminPassword",
+			"value": "test",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "expiredToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician",
+			"type": "string"
+		},
+		{
+			"key": "dieticianEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "dieticianId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "dieticianPassword",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "patientId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "fileId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ContactNumber",
+			"value": ""
+		},
+		{
+			"key": "Email",
+			"value": ""
+		},
+		{
+			"key": "DateOfBirth",
+			"value": ""
+		},
+		{
+			"key": "dieticianToken",
+			"value": ""
+		},
+		{
+			"key": "PatientContactNumber",
+			"value": ""
+		},
+		{
+			"key": "PatientEmail",
+			"value": ""
+		},
+		{
+			"key": "PatientDOB",
+			"value": ""
+		}
+	]
+}
