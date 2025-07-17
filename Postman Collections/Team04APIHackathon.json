@@ -1041,7 +1041,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "d1e5c5cb-ed93-4946-835c-9899fdb519f0",
+				"id": "b7e20484-f247-4d29-98ea-e6c4871d8f47",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1085,13 +1085,55 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "c66d0e72-74a9-4317-8bfe-d22ca80fbdc5",
+				"id": "b54778fa-6e09-48f6-b2cb-b0b4e1ab67ae",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "adminEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminPassword",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "expiredToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "dieticianEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "dieticianId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "dieticianPassword",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
