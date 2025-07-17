@@ -432,6 +432,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "29956cf0-d89d-4ee8-a3ee-ef0f41cd5e3a",
 								"exec": [
 									"const reqname = pm.iterationData.get(\"Reqname\");\r",
 									"const myRequestName = \"Retrieve Patient File by ID\"; // 👈 Set manually per request\r",
@@ -445,7 +446,7 @@
 									"    pm.request.method = method.toUpperCase();\r",
 									"}\r",
 									"\r",
-									"// ✅ Get the endpoint and replace any {{placeholders}} from environment or globals\r",
+									"// ✅ Get the endpoint and replace any {{placeholders}} from collection variables\r",
 									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
 									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
 									"\r",
@@ -461,17 +462,17 @@
 									"if (authType === \"Dietician Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"dieticianToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
 									"    });\r",
 									"} else if (authType === \"Admin Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"adminToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
 									"    });\r",
 									"} else if (authType === \"Expired Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"expiredToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
 									"    });\r",
 									"} else if (authType === \"No Auth\") {\r",
 									"    // Remove Authorization header completely\r",
@@ -485,13 +486,13 @@
 									"console.log(\"🔐 Auth Type:\", authType);"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "29956cf0-d89d-4ee8-a3ee-ef0f41cd5e3a"
+								"packages": {}
 							}
 						},
 						{
 							"listen": "test",
 							"script": {
+								"id": "0c971508-5e0c-4b30-b736-3d05fc1ed300",
 								"exec": [
 									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));",
 									"const expectedStatusText = pm.iterationData.get(\"statusText\");",
@@ -505,8 +506,7 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "0c971508-5e0c-4b30-b736-3d05fc1ed300"
+								"packages": {}
 							}
 						}
 					],
@@ -544,6 +544,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "df7faa82-642d-4aaf-a301-33762a4badfb",
 								"exec": [
 									"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));",
 									"const expectedStatusText = pm.iterationData.get(\"statusText\");",
@@ -557,13 +558,13 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "df7faa82-642d-4aaf-a301-33762a4badfb"
+								"packages": {}
 							}
 						},
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "7e40c849-b4cf-42c0-9214-97f5ffc8d9d0",
 								"exec": [
 									"const reqname = pm.iterationData.get(\"Reqname\");\r",
 									"const myRequestName = \"Delete Patient by ID\"; // 👈 Set manually per request\r",
@@ -581,23 +582,23 @@
 									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\"); // clean leading slashes\r",
 									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
 									"\r",
-									"// Handle Authorization by role\r",
+									"// Handle Authorization by role using collection variables\r",
 									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\";\r",
 									"\r",
 									"if (authType === \"Dietician Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"dieticianToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
 									"    });\r",
 									"} else if (authType === \"Admin Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"adminToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
 									"    });\r",
 									"} else if (authType === \"Expired Token\") {\r",
 									"    pm.request.headers.upsert({\r",
 									"        key: \"Authorization\",\r",
-									"        value: \"Bearer \" + pm.environment.get(\"expiredToken\")\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
 									"    });\r",
 									"} else if (authType === \"No Auth\") {\r",
 									"    pm.request.headers.remove(\"Authorization\");\r",
@@ -610,8 +611,7 @@
 									"console.log(\"Final Endpoint:\", substitutedEndpoint);"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "7e40c849-b4cf-42c0-9214-97f5ffc8d9d0"
+								"packages": {}
 							}
 						}
 					],
