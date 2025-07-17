@@ -1698,9 +1698,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}patient",
+							"raw": "{{base_url}}/patient",
 							"host": [
-								"{{base_url}}patient"
+								"{{base_url}}"
+							],
+							"path": [
+								"patient"
 							],
 							"query": [
 								{
@@ -1772,9 +1775,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}{{patientId}}",
+							"raw": "{{base_url}}/{{patientId}}",
 							"host": [
-								"{{base_url}}{{patientId}}"
+								"{{base_url}}"
+							],
+							"path": [
+								"{{patientId}}"
 							],
 							"query": [
 								{
