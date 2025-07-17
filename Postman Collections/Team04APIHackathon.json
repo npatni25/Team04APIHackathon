@@ -46,11 +46,11 @@
 								"exec": [
 									"// Generate random 10-digit Contact Number\r",
 									"const randomContact = \"1\" + Math.floor(100000000 + Math.random() * 900000000);\r",
-									"pm.variables.set(\"ContactNumber\", randomContact);\r",
+									"pm.collectionVariables.set(\"ContactNumber\", randomContact);\r",
 									"\r",
 									"// Generate random email\r",
 									"const emailPrefix = \"dietician\" + Math.floor(Math.random() * 10000);\r",
-									"pm.variables.set(\"Email\", emailPrefix + \"@example.com\");\r",
+									"pm.collectionVariables.set(\"Email\", emailPrefix + \"@example.com\");\r",
 									"\r",
 									"// Generate random DOB between 1980 and 1995\r",
 									"function getRandomDOB() {\r",
@@ -59,7 +59,7 @@
 									"    const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));\r",
 									"    return dob.toISOString();\r",
 									"}\r",
-									"pm.variables.set(\"DateOfBirth\", getRandomDOB());"
+									"pm.collectionVariables.set(\"DateOfBirth\", getRandomDOB());"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -156,11 +156,13 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "ee4dbaf4-875b-4779-8ebd-1852c0060aae",
 								"exec": [
 									"// Assuming patientId comes in response",
 									"var json = pm.response.json();",
+									"",
 									"if (json.patientId) {",
-									"    pm.environment.set('patientId', json.patientId);",
+									"    pm.collectionVariables.set('patientId', json.patientId);",
 									"    console.log('Patient created with ID: ' + json.patientId);",
 									"} else {",
 									"    console.log('Patient ID not found in response');",
@@ -171,34 +173,33 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "ee4dbaf4-875b-4779-8ebd-1852c0060aae"
+								"packages": {}
 							}
 						},
 						{
 							"listen": "prerequest",
 							"script": {
+								"id": "58f8276e-88b6-47cf-a5fd-8e3a4258be11",
 								"exec": [
 									"// Generate random Contact Number starting with 2\r",
 									"const contactNumber = \"2\" + Math.floor(100000000 + Math.random() * 900000000);\r",
-									"pm.environment.set(\"PatientContactNumber\", contactNumber);\r",
+									"pm.collectionVariables.set(\"PatientContactNumber\", contactNumber);\r",
 									"\r",
 									"// Generate unique email\r",
 									"const emailPrefix = \"jane\" + Math.floor(Math.random() * 10000);\r",
-									"pm.environment.set(\"PatientEmail\", `${emailPrefix}@example.com`);\r",
+									"pm.collectionVariables.set(\"PatientEmail\", `${emailPrefix}@example.com`);\r",
 									"\r",
 									"// Generate random DOB between 1985 and 2002\r",
 									"function getRandomDOB() {\r",
 									"    const start = new Date(1985, 0, 1);\r",
 									"    const end = new Date(2002, 11, 31);\r",
 									"    const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));\r",
-									"    return dob.toISOString().split('T')[0];\r",
+									"    return dob.toISOString().split('T')[0]; // format: YYYY-MM-DD\r",
 									"}\r",
-									"pm.environment.set(\"PatientDOB\", getRandomDOB());"
+									"pm.collectionVariables.set(\"PatientDOB\", getRandomDOB());"
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "58f8276e-88b6-47cf-a5fd-8e3a4258be11"
+								"packages": {}
 							}
 						}
 					],
@@ -1050,7 +1051,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "00fa670e-07b6-4abd-97a9-5bcb92d3c24e",
+				"id": "1357720d-84c9-4d15-ae05-6428654f73e4",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1094,7 +1095,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "f061a534-cfe3-44d0-bb8b-0fa3b6554c1c",
+				"id": "e882888d-20d3-4c02-b804-2c26726fc302",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1143,6 +1144,28 @@
 			"key": "dieticianPassword",
 			"value": "",
 			"type": "string"
+		},
+		{
+			"key": "patientId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "fileId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ContactNumber",
+			"value": ""
+		},
+		{
+			"key": "Email",
+			"value": ""
+		},
+		{
+			"key": "DateOfBirth",
+			"value": ""
 		}
 	]
 }
