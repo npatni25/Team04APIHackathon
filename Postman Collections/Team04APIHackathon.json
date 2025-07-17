@@ -757,7 +757,65 @@
 				},
 				{
 					"name": "GetDieticianUsingAdminRole",
-					"item": [],
+					"item": [
+						{
+							"name": "TC01_DieticianById",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+										"exec": [
+											"pm.test(\"Status code is 200 OK\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Status code is not 404 Not Found\", function () {\r",
+											"    pm.response.to.not.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "22b1f966-0716-49fd-905b-e9bbbad9563d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{admin_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/dietician/346"
+							},
+							"response": []
+						}
+					],
 					"id": "fdf1a354-a585-4ece-9818-f96ed22e5dbb"
 				},
 				{
