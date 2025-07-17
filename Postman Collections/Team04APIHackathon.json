@@ -818,7 +818,7 @@
 							"response": []
 						},
 						{
-							"name": "TC01_DieticianById_ValidToken Copy",
+							"name": "TC04_DieticianById_InvalidMethod",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -838,11 +838,8 @@
 									"script": {
 										"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
 										"exec": [
-											"console.log(pm.iterationData.get(\"scenarioName\"));\r",
-											"console.log(\"Expected Status Code :: \" + pm.iterationData.get(\"responseCode\"));\r",
-											"\r",
 											"pm.test(\"Validate status code\", function () {\r",
-											"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
+											"    pm.response.to.have.status(405);\r",
 											"});"
 										],
 										"type": "text/javascript",
@@ -861,11 +858,11 @@
 										"token": "{{admin_token}}"
 									}
 								},
-								"method": "GET",
+								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "",
+									"raw": "{}",
 									"options": {
 										"raw": {
 											"language": "json"
