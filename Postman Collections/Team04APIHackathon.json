@@ -635,6 +635,17 @@
 				}
 			],
 			"id": "3756d598-3916-41fb-a02a-8e2e7f6946cd"
+		},
+		{
+			"name": "Balauma_GetDieticianById",
+			"item": [
+				{
+					"name": "New Folder",
+					"item": [],
+					"id": "277fba1f-10ce-442a-9698-c64971e622a6"
+				}
+			],
+			"id": "a37ff4db-b0fd-4496-955f-d4509667ee0d"
 		}
 	],
 	"event": [
