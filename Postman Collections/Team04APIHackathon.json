@@ -2711,6 +2711,18 @@
 			"name": "Delete and CleanUp",
 			"item": [
 				{
+					"name": "DeleteDieticianByID",
+					"id": "f05a5786-f372-4dfb-9dd6-be3206f9108c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Patient by ID",
 					"event": [
 						{
