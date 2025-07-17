@@ -66,6 +66,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{adminToken}}"
+							}
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -1799,6 +1805,7 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "b0321dd6-c1dc-41c0-a632-a8c71b3e5198",
 								"exec": [
 									"// ✅ Status code check",
 									"pm.test(\"Status code is 200\", function () {",
@@ -1822,8 +1829,7 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {},
-								"id": "b0321dd6-c1dc-41c0-a632-a8c71b3e5198"
+								"packages": {}
 							}
 						}
 					],
