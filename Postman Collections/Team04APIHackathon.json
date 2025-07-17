@@ -10,48 +10,6 @@
 			"name": "Setup",
 			"item": [
 				{
-					"name": "Admin Login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// ✅ Status code check",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"",
-									"let json = pm.response.json();",
-									"pm.environment.set(\"adminToken\", json.token);"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"id": "bb17568d-43bd-4cef-b4fe-e13221b97a66"
-							}
-						}
-					],
-					"id": "957d8096-b27e-4597-9ee3-fc23e8416306",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"userLoginEmail\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
-						},
-						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
-					},
-					"response": []
-				},
-				{
 					"name": "Generate Dietician token",
 					"event": [
 						{
@@ -735,84 +693,51 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "f7199f25-d530-42ce-abda-8c9a0b49e8ed",
+				"id": "d1e5c5cb-ed93-4946-835c-9899fdb519f0",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
-					"// --- Set HTTP method dynamically from iteration data ---\r",
-					"let method = pm.iterationData.get(\"method\") || pm.iterationData.get(\"METHOD\");\r",
-					"if (method) {\r",
-					"    pm.request.method = method.toUpperCase();\r",
-					"}\r",
+					"const loginUrl = pm.environment.get(\"base_url\") + \"/dietician/login\";\r",
+					"const adminEmail = pm.environment.get(\"adminEmail\");\r",
+					"const adminPassword = pm.environment.get(\"adminPassword\");\r",
 					"\r",
-					"// --- Get raw endpoint from iteration data, fallback to \"/\" ---\r",
-					"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+					"if (!pm.environment.get(\"adminToken\")) {\r",
+					"    console.log(\"🔐 Logging in to get Admin Token...\");\r",
 					"\r",
-					"// --- Function to replace placeholders like {{fileId}} or :patientId ---\r",
-					"function replacePlaceholder(str, placeholder, value) {\r",
-					"    if (!value) return str;\r",
-					"    return str.replace(new RegExp(`{{${placeholder}}}`, 'g'), value)\r",
-					"              .replace(new RegExp(`:${placeholder}`, 'g'), value);\r",
-					"}\r",
+					"    pm.sendRequest({\r",
+					"        url: loginUrl,\r",
+					"        method: \"POST\",\r",
+					"        header: { \"Content-Type\": \"application/json\" },\r",
+					"        body: {\r",
+					"            mode: \"raw\",\r",
+					"            raw: JSON.stringify({\r",
+					"                userLoginEmail: adminEmail,\r",
+					"                password: adminPassword\r",
+					"            })\r",
+					"        }\r",
+					"    }, function (err, res) {\r",
+					"        if (err) {\r",
+					"            console.error(\"❌ Login failed:\", err);\r",
+					"        } else {\r",
+					"            const jsonData = res.json();\r",
+					"            const token = jsonData.token;\r",
 					"\r",
-					"// --- List of placeholders you want to substitute ---\r",
-					"const placeholders = [\"patientId\", \"fileId\", \"dieticianId\", \"userId\"];\r",
-					"\r",
-					"// --- Replace placeholders in the rawEndpoint using environment or variables ---\r",
-					"placeholders.forEach(ph => {\r",
-					"    const val = pm.environment.get(ph) || pm.variables.get(ph);\r",
-					"    rawEndpoint = replacePlaceholder(rawEndpoint, ph, val);\r",
-					"});\r",
-					"\r",
-					"// --- Substitute any remaining environment/collection variables inside the string ---\r",
-					"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
-					"\r",
-					"// --- Clean leading slashes from the endpoint to normalize ---\r",
-					"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
-					"\r",
-					"// --- Save final endpoint to a variable for request URL usage ---\r",
-					"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
-					"\r",
-					"// --- Authorization header handling ---\r",
-					"const authType = pm.iterationData.get(\"authType\") || \"No Auth\";\r",
-					"\r",
-					"const tokenMap = {\r",
-					"    \"Dietician Token\": \"dieticianToken\",\r",
-					"    \"Admin Token\": \"adminToken\",\r",
-					"    \"Expired Token\": \"expiredToken\"\r",
-					"};\r",
-					"\r",
-					"if (authType in tokenMap) {\r",
-					"    const token = pm.environment.get(tokenMap[authType]);\r",
-					"    if (token) {\r",
-					"        pm.request.headers.upsert({\r",
-					"            key: \"Authorization\",\r",
-					"            value: \"Bearer \" + token\r",
-					"        });\r",
-					"    } else {\r",
-					"        // Remove header if token is missing\r",
-					"        pm.request.headers.remove(\"Authorization\");\r",
-					"    }\r",
-					"} else {\r",
-					"    // Remove Authorization header if no auth is needed or unrecognized type\r",
-					"    pm.request.headers.remove(\"Authorization\");\r",
-					"}\r",
-					"\r",
-					"// --- Debug logging ---\r",
-					"console.log(\"🧪 Scenario:\", pm.iterationData.get(\"scenario\"));\r",
-					"console.log(\"📮 Method:\", pm.request.method);\r",
-					"console.log(\"🔐 Auth Type:\", authType);\r",
-					"console.log(\"🔗 Endpoint (raw):\", pm.iterationData.get(\"endpoint\"));\r",
-					"console.log(\"📁 Endpoint (substituted):\", substitutedEndpoint);\r",
-					"console.log(\"🌐 Full URL:\", (pm.environment.get(\"base_url\") || \"\") + \"/\" + substitutedEndpoint);\r",
-					""
+					"            if (token) {\r",
+					"                pm.environment.set(\"adminToken\", token);\r",
+					"                console.log(\"✅ Admin token saved to environment.\");\r",
+					"            } else {\r",
+					"                console.error(\"❌ Token not found in login response:\", jsonData);\r",
+					"            }\r",
+					"        }\r",
+					"    });\r",
+					"}"
 				]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
-				"id": "9566f0c8-8e36-4c63-b3b5-d27c002ad7c1",
+				"id": "c66d0e72-74a9-4317-8bfe-d22ca80fbdc5",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
