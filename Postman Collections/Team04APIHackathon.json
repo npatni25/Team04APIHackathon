@@ -640,9 +640,130 @@
 			"name": "Balauma_GetDieticianById",
 			"item": [
 				{
-					"name": "New Folder",
-					"item": [],
+					"name": "Setup",
+					"item": [
+						{
+							"name": "Admin Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "33efd9f1-01f8-4c5f-88af-70305b3eb3bf",
+										"exec": [
+											"// ✅ Status code check",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// ✅ Schema validation (example - adjust per endpoint)",
+											"const schema = {",
+											"  type: \"object\",",
+											"  properties: {",
+											"    token: { type: \"string\" },",
+											"    userId: { type: \"string\" },",
+											"    email: { type: \"string\" }",
+											"  },",
+											"  required: [\"token\", \"userId\", \"email\"]",
+											"};",
+											"pm.test(\"Schema is valid\", function () {",
+											"  pm.response.to.have.jsonSchema(schema);",
+											"});",
+											"",
+											"let json = pm.response.json();",
+											"pm.environment.set(\"adminToken\", json.token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "909963db-96a4-4bec-9249-05a3c38dc16d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"Team404@gmail.com\",\n  \"password\": \"test\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
+							},
+							"response": []
+						},
+						{
+							"name": "Dietician Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// ✅ Status code check",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"// ✅ Schema validation (example - adjust per endpoint)",
+											"const schema = {",
+											"  type: \"object\",",
+											"  properties: {",
+											"    token: { type: \"string\" },",
+											"    userId: { type: \"string\" },",
+											"    email: { type: \"string\" }",
+											"  },",
+											"  required: [\"token\", \"userId\", \"email\"]",
+											"};",
+											"pm.test(\"Schema is valid\", function () {",
+											"  pm.response.to.have.jsonSchema(schema);",
+											"});",
+											"",
+											"let json = pm.response.json();",
+											"pm.environment.set(\"dieticianToken\", json.token);"
+										],
+										"type": "text/javascript",
+										"packages": {},
+										"id": "c050e7c5-76e2-4b15-8d81-73c450cf7d87"
+									}
+								}
+							],
+							"id": "cd0d64c5-9523-4caf-a923-b13661352837",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userLoginEmail\": \"{{dieticianEmail}}\",\n  \"password\": \"{{dieticianPassword}}\"\n}"
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
+							},
+							"response": []
+						}
+					],
 					"id": "277fba1f-10ce-442a-9698-c64971e622a6"
+				},
+				{
+					"name": "GetDieticianUsingAdminRole",
+					"item": [],
+					"id": "fdf1a354-a585-4ece-9818-f96ed22e5dbb"
+				},
+				{
+					"name": "GetDieticianUsingDieticianRole",
+					"item": [],
+					"id": "0a84815d-0a1f-47a8-98bc-f512bc207d3d"
 				}
 			],
 			"id": "a37ff4db-b0fd-4496-955f-d4509667ee0d"
