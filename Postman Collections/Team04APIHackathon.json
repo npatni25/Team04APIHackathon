@@ -99,7 +99,7 @@
 							"script": {
 								"id": "7590bdce-6b1c-4e95-9bb0-2aed7a49fde9",
 								"exec": [
-									"// ✅ Status code check",
+									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
@@ -114,8 +114,12 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"packages": {},
-								"type": "text/javascript"
+								"id": "7103e556-d12f-4f4e-af17-570653ab1b4f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -1614,15 +1618,15 @@
 							"script": {
 								"id": "209ee69b-8ab9-4038-9631-0caa7d2659a8",
 								"exec": [
-									"// Assuming patientId comes in response",
-									"var json = pm.response.json();",
+									"// // Assuming patientId comes in response",
+									"// var json = pm.response.json();",
 									"",
-									"if (json.patientId) {",
-									"    pm.collectionVariables.set('patientId', json.patientId);",
-									"    console.log('Patient created with ID: ' + json.patientId);",
-									"} else {",
-									"    console.log('Patient ID not found in response');",
-									"}",
+									"// if (json.patientId) {",
+									"//     pm.collectionVariables.set('patientId', json.patientId);",
+									"//     console.log('Patient created with ID: ' + json.patientId);",
+									"// } else {",
+									"//     console.log('Patient ID not found in response');",
+									"// }",
 									"",
 									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
