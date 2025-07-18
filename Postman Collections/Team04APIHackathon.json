@@ -744,7 +744,7 @@
 							"id": "f8a7f2cc-5bd0-49a6-bb50-1c18d2e63428"
 						},
 						{
-							"name": "Retrieve All Dietician",
+							"name": "Retrieve All Dietician_with admintoken",
 							"event": [
 								{
 									"listen": "test",
@@ -766,6 +766,45 @@
 								}
 							],
 							"id": "51420741-b602-4a18-84a4-877cb9424940",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken1}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{base_url}}/dietician"
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve All Dietician_with DieticianToken",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f045ba4c-3e56-4b48-b823-790251022815",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Text is OK\", function () {",
+											"    pm.response.to.have.status(\"OK\");",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"id": "135178e8-177e-47d8-bfc0-d28e9d7e9b9d",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -812,35 +851,6 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "{{base_url}}/dietician"
-							},
-							"response": []
-						},
-						{
-							"name": "New Request",
-							"id": "8904ac10-5f51-46b6-9f11-8e35309dd00e",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": {
-										"token": "{{adminToken1}}"
-									}
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
-								},
 								"url": "{{base_url}}/dietician"
 							},
 							"response": []
