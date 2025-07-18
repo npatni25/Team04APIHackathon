@@ -1667,7 +1667,7 @@
 							"script": {
 								"id": "6eccd932-e265-46fd-861f-5dd736d3ac04",
 								"exec": [
-									"onst reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const reqname = pm.iterationData.get(\"Reqname\");\r",
 									"const myRequestName = \"GetAllPatientDiatecian\"; \r",
 									"\r",
 									"// if (pm.info.requestName !== pm.iterationData.get(\"Reqname\")) {\r",
@@ -1678,8 +1678,8 @@
 									"// console.log(` Running Request: ${pm.info.requestName}`);\r",
 									"// console.log(` Target from JSON: ${pm.iterationData.get(\"Reqname\")}`);\r",
 									"\r",
-									"    let endpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
-									"    pm.variables.set(\"endpoint\", endpoint);  // makes {{endpoint}} available in URL\r",
+									"    // let endpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+									"    // pm.variables.set(\"endpoint\", endpoint);  // makes {{endpoint}} available in URL\r",
 									"\r",
 									"\r",
 									"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
@@ -1728,7 +1728,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{base_url}}/{{endpoint}}"
+						"url": "{{base_url}}/patient"
 					},
 					"response": []
 				}
