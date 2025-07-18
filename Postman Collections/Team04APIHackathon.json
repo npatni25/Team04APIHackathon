@@ -176,6 +176,7 @@
 										"exec": [
 											"const reqname = pm.iterationData.get(\"requestName\");",
 											"const myRequestName = \"CreateDietician\"; ",
+											"",
 											"pm.variables.set(\"shouldRun\", reqname === myRequestName);",
 											"",
 											"// pm.variables.set(\"shouldRun\", reqname === myRequestName);",
