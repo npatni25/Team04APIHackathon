@@ -179,15 +179,13 @@
 											"const myRequestName = \"CreateDietician\"; ",
 											"",
 											"",
-											"pm.variables.set(\"shouldRun\", reqname === myRequestName);",
+											"// pm.variables.set(\"shouldRun\", reqname === myRequestName);",
 											"",
 											"",
-											"// const reqName = pm.iterationData.get(\"requestName\");",
-											"",
-											"// if (reqName !== \"CreateDietician\") {",
-											"//     console.log(`Skipping iteration with name: ${reqName}`);",
-											"//     Postman.setNextRequest(null)",
-											"// }"
+											"if (reqName !== \"CreateDietician\") {",
+											"    console.log(`Skipping iteration with name: ${reqName}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -2934,7 +2932,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "{{base_url}}/dietician/{{dieticianId}}"
+						"url": "{{base_url}}{{dynamicEndpoint}}"
 					},
 					"response": []
 				},
