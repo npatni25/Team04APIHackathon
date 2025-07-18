@@ -720,21 +720,24 @@
 							"name": "GetDieticianUsingDieticianRole",
 							"item": [
 								{
-									"name": "]/o0;'-",
+									"name": "Get Dietician by id Copy",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"id": "ffccab65-d437-4f28-9efc-8ba595523c7c",
 												"exec": [
-													"let id = pm.iterationData.get(\"dieticianId\");\r",
-													"console.log(\"Processing GET dietician id endpoint using :: \" + id);\r",
+													"const reqname = pm.iterationData.get(\"Reqname\");\r",
+													"const myRequestName = \"Get Dietician by id\"; \r",
 													"\r",
-													"let method = pm.iterationData.get(\"method\");\r",
+													"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
+													"\r",
+													"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
 													"if (method) pm.request.method = method.toUpperCase();\r",
 													"\r",
-													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
-													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+													"\r",
+													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
+													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint);\r",
 													"\r",
 													"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
 													"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
@@ -748,6 +751,7 @@
 													"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
 													"    });\r",
 													"} else if (authType === \"Admin Token\") {\r",
+													"    console.log(\"Updating the Admin token ---- \" + pm.collectionVariables.get(\"adminToken\"));\r",
 													"    pm.request.headers.upsert({\r",
 													"        key: \"Authorization\",\r",
 													"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
@@ -757,367 +761,8 @@
 													"        key: \"Authorization\",\r",
 													"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
 													"    });\r",
-													"} "
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
-												"exec": [
-													"console.log(pm.iterationData.get(\"scenarioName\"));\r",
-													"console.log(\"Expected Status Code :: \" + pm.iterationData.get(\"responseCode\"));\r",
-													"\r",
-													"pm.test(\"Validate status code\", function () {\r",
-													"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
-													"});\r",
-													"\r",
-													"pm.test(\"Response body matches expected JSON\", function () {\r",
-													"    let responseBody = pm.response.json();\r",
-													"    let expectedResponseBody = pm.iterationData.get(\"expectedResponseBody\");\r",
-													"    if (responseBody.hasOwnProperty(\"timestamp\")){\r",
-													"        responseBody.timestamp = \"\";\r",
-													"    }\r",
-													"    pm.expect(responseBody).to.eql(expectedResponseBody);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "0d515d62-9a3b-47e5-bff4-d0178c52aea1",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": {
-												"token": "{{dietician_token}}"
-											}
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
-									},
-									"response": []
-								},
-								{
-									"name": "TC06_DieticianById_InvalidMethod",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
-												"exec": [
-													"// Set dietician id variable from Json\r",
-													"let id = pm.iterationData.get(\"dieticianId\");\r",
-													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
-												"exec": [
-													"pm.test(\"Validate status code\", function () {\r",
-													"    pm.response.to.have.status(405);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "0ad26857-bc05-4912-82a9-acff86181af4",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": {
-												"token": "{{admin_token}}"
-											}
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
-									},
-									"response": []
-								},
-								{
-									"name": "TC07_DieticianById_NoAuth",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
-												"exec": [
-													"// Set dietician id variable from Json\r",
-													"let id = pm.iterationData.get(\"dieticianId\");\r",
-													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
-												"exec": [
-													"pm.test(\"Validate status code\", function () {\r",
-													"    pm.response.to.have.status(401);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "fa2451a0-e52a-43b4-acd8-c718f3036cad",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "noauth"
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
-									},
-									"response": []
-								},
-								{
-									"name": "TC08_DieticianById_InvalidToken",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
-												"exec": [
-													"// Set dietician id variable from Json\r",
-													"let id = pm.iterationData.get(\"dieticianId\");\r",
-													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
-												"exec": [
-													"pm.test(\"Validate status code\", function () {\r",
-													"    pm.response.to.have.status(401);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "8061030a-4f61-4062-bc93-b4526a653847",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": {
-												"token": "test"
-											}
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
-									},
-									"response": []
-								}
-							],
-							"id": "0a84815d-0a1f-47a8-98bc-f512bc207d3d"
-						},
-						{
-							"name": "GetDieticianUsingAdminRole",
-							"item": [
-								{
-									"name": "TC01_DieticianById_ValidToken",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
-												"exec": [
-													"// Set dietician id variable from Json\r",
-													"let id = pm.iterationData.get(\"dieticianId\");\r",
-													"console.log(\"Processing GET dietician id endpoint using :: \" + id);\r",
-													"\r",
-													"let method = pm.iterationData.get(\"method\");\r",
-													"if (method) pm.request.method = method.toUpperCase();\r",
-													"\r",
-													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
-													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
-													"\r",
-													"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
-													"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
-													"\r",
-													"\r",
-													"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
-													"\r",
-													"if (authType === \"Dietician Token\") {\r",
-													"    pm.request.headers.upsert({\r",
-													"        key: \"Authorization\",\r",
-													"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
-													"    });\r",
-													"} else if (authType === \"Admin Token\") {\r",
-													"    pm.request.headers.upsert({\r",
-													"        key: \"Authorization\",\r",
-													"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
-													"    });\r",
-													"} else if (authType === \"Expired Token\") {\r",
-													"    pm.request.headers.upsert({\r",
-													"        key: \"Authorization\",\r",
-													"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
-													"    });\r",
-													"} "
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
-												"exec": [
-													"console.log(pm.iterationData.get(\"scenarioName\"));\r",
-													"console.log(\"Expected Status Code :: \" + pm.iterationData.get(\"responseCode\"));\r",
-													"\r",
-													"\r",
-													"pm.test(\"Validate status code\", function () {\r",
-													"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
-													"});\r",
-													"\r",
-													"pm.test(\"Response body matches expected JSON\", function () {\r",
-													"    let responseBody = pm.response.json();\r",
-													"    let expectedResponseBody = pm.iterationData.get(\"expectedResponseBody\");\r",
-													"    if (responseBody.hasOwnProperty(\"timestamp\")){\r",
-													"        responseBody.timestamp = \"\";\r",
-													"    }\r",
-													"    pm.expect(responseBody).to.eql(expectedResponseBody);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "22b1f966-0716-49fd-905b-e9bbbad9563d",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": {
-												"token": "{{admin_token}}"
-											}
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
-									},
-									"response": []
-								},
-								{
-									"name": "TC01_DieticianById_ValidToken Copy",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
-												"exec": [
-													"let rawEndpoint;\r",
-													"if (pm.iterationData) {\r",
-													"    rawEndpoint = pm.iterationData.get(\"endpoint\");\r",
-													"}\r",
-													"if (!rawEndpoint) {\r",
-													"    rawEndpoint = pm.request.url.getPath();  // fallback: current path of the request\r",
-													"}\r",
-													"const baseUrl = pm.environment.get(\"baseurl\") || \"https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician\";\r",
-													"if (rawEndpoint.startsWith(\"http\")) {\r",
-													"    pm.request.url = rawEndpoint;\r",
-													"} else {\r",
-													"    let parts = rawEndpoint.split(\"/\").filter(p => p !== \"\");\r",
-													"    let encodedPath = parts[0] || \"\";\r",
-													"    for (let i = 1; i < parts.length; i++) {\r",
-													"        encodedPath += \"/\" + encodeURIComponent(parts[i].trim());\r",
-													"    }\r",
-													"    pm.request.url = baseUrl + \"/\" + encodedPath;\r",
-													"}\r",
-													"const token = pm.environment.get(\"admin_token\");\r",
-													"if (token) {\r",
-													"    pm.request.headers.upsert({\r",
-													"        key: \"Authorization\",\r",
-													"        value: `Bearer ${token}`\r",
-													"    });\r",
-													"} else {\r",
-													"    console.warn(\"BearerToken is not set in environment!\");\r",
+													"} else if (authType === \"No Auth\") {\r",
+													"    pm.request.headers.remove(\"Authorization\");\r",
 													"}"
 												],
 												"type": "text/javascript",
@@ -1127,63 +772,25 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"id": "beb715ce-d4df-4620-860a-8bfe72a13e1f",
 												"exec": [
-													"if (pm.response.code === 200) {\r",
-													"    pm.test(\"Status code is 200 (Success)\", () => {\r",
-													"        pm.expect(pm.response.code).to.equal(200);\r",
-													"    });\r",
-													"    const data = pm.response.json();\r",
-													"    pm.test(\"Response is an array\", () => {\r",
-													"        pm.expect(data).to.be.an(\"array\");\r",
-													"    });\r",
-													"    pm.test(\"First item has required properties\", () => {\r",
-													"        if (data.length > 0) {\r",
-													"            const item = data[0];\r",
-													"            pm.expect(item).to.have.property(\"id\");\r",
-													"            pm.expect(item).to.have.property(\"Firstname\");\r",
-													"            pm.expect(item).to.have.property(\"Lastname\");\r",
-													"            pm.expect(item).to.have.property(\"ContactNumber\");\r",
-													"            pm.expect(item).to.have.property(\"DateOfBirth\");\r",
-													"            pm.expect(item).to.have.property(\"Email\");\r",
-													"            pm.expect(item).to.have.property(\"HospitalName\");\r",
-													"            pm.expect(item).to.have.property(\"HospitalStreet\");\r",
-													"            pm.expect(item).to.have.property(\"HospitalCity\");\r",
-													"            pm.expect(item).to.have.property(\"HospitalPincode\");\r",
-													"            pm.expect(item).to.have.property(\"Education\");\r",
-													"        }\r",
-													"    });\r",
-													"    // Optionally store response data in environment for next requests\r",
-													"    pm.environment.set(\"morbidityData\", JSON.stringify(data));\r",
-													"} else if (pm.response.code === 404) {\r",
-													"    pm.test(\"Status code is 404 (Not Found)\", () => {\r",
-													"        pm.expect(pm.response.code).to.equal(404);\r",
-													"    });\r",
-													"    pm.test(\"Morbidity not found message exists\", () => {\r",
-													"        const responseText = pm.response.text().toLowerCase();\r",
-													"        pm.expect(responseText.includes(\"not found\")).to.be.true;\r",
-													"    });\r",
-													"} else if (pm.response.code === 401) {\r",
-													"    pm.test(\"Status code is 401 (Unauthorized)\", () => {\r",
-													"        pm.expect(pm.response.code).to.equal(401);\r",
-													"    });\r",
-													"} else if (pm.response.code === 400) {\r",
-													"    pm.test(\"Status code is 400 (Bad Request)\", () => {\r",
-													"        pm.expect(pm.response.code).to.equal(400);\r",
-													"    });\r",
-													"} else {\r",
-													"    pm.test(\"Unexpected status code\", () => {\r",
-													"        pm.expect.fail(`Expected 200, 404, 401, or 400 but got ${pm.response.code}`);\r",
-													"    });\r",
-													"}\r",
-													""
+													"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));\r",
+													"const expectedStatusText = pm.iterationData.get(\"statusText\");\r",
+													"\r",
+													"pm.test(\" Status Code matches\", function () {\r",
+													"    pm.response.to.have.status(expectedStatus);\r",
+													"});\r",
+													"\r",
+													"pm.test(\" Status Text matches\", function () {\r",
+													"    pm.expect(pm.response.status).to.eql(expectedStatusText);\r",
+													"});"
 												],
 												"type": "text/javascript",
 												"packages": {}
 											}
 										}
 									],
-									"id": "61b90b40-5525-4f5a-b934-1b70b6f4ef24",
+									"id": "dac3d6f3-e376-45ac-8672-57f9dafe3037",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -1192,185 +799,31 @@
 											"type": "noauth"
 										},
 										"method": "GET",
-										"header": [],
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{adminToken}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
 										"body": {
 											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											"raw": ""
 										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
+										"url": "{{base_url}}{{dynamicEndpoint}}"
 									},
 									"response": []
-								},
-								{
-									"name": "TC04_DieticianById_InvalidMethod",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
-												"exec": [
-													"// Set dietician id variable from Json\r",
-													"let id = pm.iterationData.get(\"dieticianId\");\r",
-													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
-												"exec": [
-													"pm.test(\"Validate status code\", function () {\r",
-													"    pm.response.to.have.status(405);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "f96af19d-3c4a-48d8-90b1-17d27130e462",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": {
-												"token": "{{admin_token}}"
-											}
-										},
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
-									},
-									"response": []
-								},
-								{
-									"name": "TC02_DieticianById_NoAuth",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
-												"exec": [
-													"// Set dietician id variable from Json\r",
-													"let id = pm.iterationData.get(\"dieticianId\");\r",
-													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
-												"exec": [
-													"pm.test(\"Validate status code\", function () {\r",
-													"    pm.response.to.have.status(401);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "083c6893-aded-446d-a304-965f4ff242c6",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "noauth"
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
-									},
-									"response": []
-								},
-								{
-									"name": "TC03_DieticianById_InvalidToken",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
-												"exec": [
-													"// Set dietician id variable from Json\r",
-													"let id = pm.iterationData.get(\"dieticianId\");\r",
-													"console.log(\"Processing GET dietician id endpoint using :: \" + id);"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
-												"exec": [
-													"pm.test(\"Validate status code\", function () {\r",
-													"    pm.response.to.have.status(401);\r",
-													"});"
-												],
-												"type": "text/javascript",
-												"packages": {}
-											}
-										}
-									],
-									"id": "7383235d-553c-4c5e-a061-6c4e8d042b90",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": {
-												"token": "test"
-											}
-										},
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": "{{base_url}}/dietician/{{dieticianId}}"
-									},
-									"response": []
-								},
+								}
+							],
+							"id": "0a84815d-0a1f-47a8-98bc-f512bc207d3d"
+						},
+						{
+							"name": "GetDieticianUsingAdminRole",
+							"item": [
 								{
 									"name": "Get Dietician by id",
 									"event": [
@@ -1389,7 +842,7 @@
 													"\r",
 													"\r",
 													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
-													"//let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint);\r",
 													"\r",
 													"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
 													"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
