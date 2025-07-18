@@ -1389,7 +1389,7 @@
 													"\r",
 													"\r",
 													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
-													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+													"//let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
 													"\r",
 													"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
 													"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
@@ -4279,15 +4279,15 @@
 			"value": ""
 		},
 		{
-			"key": "ContactNumber",
+			"key": "ContactNumber1",
 			"value": ""
 		},
 		{
-			"key": "Email",
+			"key": "Email1",
 			"value": ""
 		},
 		{
-			"key": "DateOfBirth",
+			"key": "DateOfBirth1",
 			"value": ""
 		}
 	]
