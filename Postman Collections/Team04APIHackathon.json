@@ -216,7 +216,7 @@
 											"const reqName = pm.iterationData.get(\"requestName\");",
 											"const testCase = pm.iterationData.get(\"TestCase\");",
 											"console.log(\"requestNamelog:\" + reqName);",
-											"console.log(\"testCaselog:\" + reqName);",
+											"console.log(\"testCaselog:\" + testCase);",
 											"",
 											"",
 											"",
