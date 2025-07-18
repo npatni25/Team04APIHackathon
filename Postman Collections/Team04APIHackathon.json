@@ -1679,6 +1679,18 @@
 						"url": "{{base_url}}/patient"
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "151047f8-c68b-49a1-9228-c096d7ee2890",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"id": "3756d598-3916-41fb-a02a-8e2e7f6946cd"
