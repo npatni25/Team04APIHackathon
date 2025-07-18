@@ -1361,7 +1361,7 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "Get Dietician by id",
 									"id": "d7433045-9cc4-42a4-a404-ae6c26aefa36",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
