@@ -182,7 +182,7 @@
 											"pm.variables.set(\"shouldRun\", reqname === myRequestName);",
 											"",
 											"",
-											"const reqName = pm.iterationData.get(\"requestName\");",
+											"// const reqName = pm.iterationData.get(\"requestName\");",
 											"",
 											"// if (reqName !== \"CreateDietician\") {",
 											"//     console.log(`Skipping iteration with name: ${reqName}`);",
