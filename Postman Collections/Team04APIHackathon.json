@@ -1235,9 +1235,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}",
+							"raw": "{{base_url}}{{endpoint}}",
 							"host": [
-								"{{base_url}}"
+								"{{base_url}}{{endpoint}}"
 							],
 							"query": [
 								{
