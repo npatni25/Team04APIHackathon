@@ -2907,6 +2907,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{adminToken}}"
+							}
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": "{{base_url}}/dietician/{{dieticianId}}"
@@ -3031,6 +3037,12 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{adminToken}}"
+							}
+						},
 						"method": "GET",
 						"header": [],
 						"url": "{{base_url}}/logoutdietician"
