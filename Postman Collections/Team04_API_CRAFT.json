@@ -293,10 +293,10 @@
 										"exec": [
 											"const reqName = pm.iterationData.get(\"requestName\");",
 											"",
-											"// if (reqName !== \"CreateDietician\") {",
-											"//     console.log(`Skipping iteration with name: ${reqName}`);",
-											"//     Postman.setNextRequest(null)",
-											"// }"
+											"if (reqName !== \"CreateDietician\") {",
+											"    console.log(`Skipping iteration with name: ${reqName}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -673,10 +673,10 @@
 										"exec": [
 											"const reqName = pm.iterationData.get(\"requestName\");",
 											"",
-											"// if (reqName !== \"UpdateDietician\") {",
-											"//     console.log(`Skipping iteration with name: ${reqName}`);",
-											"//     Postman.setNextRequest(null)",
-											"// }"
+											"if (reqName !== \"UpdateDietician\") {",
+											"    console.log(`Skipping iteration with name: ${reqName}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
