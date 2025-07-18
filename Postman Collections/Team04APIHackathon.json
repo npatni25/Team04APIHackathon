@@ -1738,14 +1738,72 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Add Reort Check for negative scenarion",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e494dc90-09ae-4f74-9541-2ea8bb465daa",
+								"exec": [
+									"const reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const myRequestName = \"UpdatePatient report BypatientIdDiatecian New Patient\"; \r",
+									"\r",
+									"\r",
+									"// if (pm.info.requestName !== pm.iterationData.get(\"Reqname\")) {\r",
+									"//     console.log(`Skipping this request. Not matched.`);\r",
+									"//     postman.setNextRequest(null);\r",
+									"// }\r",
+									"\r",
+									"// console.log(` Running Request: ${pm.info.requestName}`);\r",
+									"// console.log(` Target from JSON: ${pm.iterationData.get(\"Reqname\")}`);\r",
+									"\r",
+									"    let endpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+									"    pm.variables.set(\"endpoint\", endpoint);  // makes {{endpoint}} available in URL\r",
+									"\r",
+									"\r",
+									"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
+									"if (method) pm.request.method = method.toUpperCase();\r",
+									"\r",
+									"\r",
+									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
+									"\r",
+									"\r",
+									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
+									"\r",
+									"if (authType === \"Dietician Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Admin Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Expired Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+									"    });\r",
+									"} else if (authType === \"No Auth\") {\r",
+									"    pm.request.headers.remove(\"Authorization\");\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "03a97571-f636-4691-aacf-b8d2786d2631",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient/newReports/{{patientId}}"
 					},
 					"response": []
 				}
