@@ -293,10 +293,10 @@
 										"exec": [
 											"const reqName = pm.iterationData.get(\"requestName\");",
 											"",
-											"if (reqName !== \"CreateDietician\") {",
-											"    console.log(`Skipping iteration with name: ${reqName}`);",
-											"    Postman.setNextRequest(null)",
-											"}"
+											"// if (reqName !== \"CreateDietician\") {",
+											"//     console.log(`Skipping iteration with name: ${reqName}`);",
+											"//     Postman.setNextRequest(null)",
+											"// }"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -502,107 +502,6 @@
 				{
 					"name": "UpdateDietician",
 					"item": [
-						{
-							"name": "fortest Copy",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "23bf1c95-4d63-4cb8-bf52-114f9ae5daaa",
-										"exec": [
-											"pm.test(\"Status code / error message are as expected\", function () {",
-											"    try {",
-											"        const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
-											"        const expectedError = pm.iterationData.get(\"expectedErrorMessage\");",
-											"        if (isNaN(expectedCode)) {",
-											"            throw new Error(\"Expected status code is not a valid number.\");",
-											"        }",
-											"        pm.expect(pm.response.code).to.eql(expectedCode);",
-											"        console.log(`Status code matched: ${expectedCode}`);",
-											"        const responseBody = pm.response.json();",
-											"",
-											"        if (expectedError) {",
-											"            const actualError = responseBody.error || responseBody.message || responseBody.detail || JSON.stringify(responseBody);",
-											"            pm.expect(actualError).to.include(expectedError);",
-											"            console.log(`Error message matched: ${expectedError}`);",
-											"        }",
-											"",
-											"    } catch (err) {",
-											"        console.error(`❌ Test failed: ${err.message}`);",
-											"        console.error(`Response Status: ${pm.response.code}`);",
-											"        console.error(`Expected Status: ${pm.iterationData.get(\"statusCode\")}`);",
-											"        console.error(`Expected Error: ${pm.iterationData.get(\"expectedErrorMessage\")}`);",
-											"        console.error(`Actual Response: ${pm.response.text()}`);",
-											"        throw err; ",
-											"    }",
-											"});",
-											"",
-											"",
-											"",
-											"// pm.test(\"Status code is as expected\", function () {",
-											"//     const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
-											"//     pm.response.to.have.status(expectedCode);",
-											"// });",
-											"",
-											"",
-											"// pm.test(\"Status text is as expected\", function () {",
-											"//     const expectedText = pm.iterationData.get(\"statusText\");",
-											"//     pm.expect(pm.response.status).to.eql(expectedText);",
-											"// });"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "55932594-7476-4a6f-bb17-4d6029195d48",
-										"exec": [
-											"//const reqName = pm.iterationData.get(\"requestName\");",
-											"const testCase = pm.iterationData.get(\"TestCase\");",
-											"",
-											"// if (testCase !== \"TC46\" ) {",
-											"//     console.log(`Skipping iteration with name: ${testCase}`);",
-											"//     Postman.setNextRequest(null)",
-											"// }"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"id": "4d05b2ed-4640-4be0-bca2-cb38c97a6c37",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": {
-										"token": "{{adminToken}}"
-									}
-								},
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer{{adminToken1}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
-								},
-								"url": "{{base_url}}{{endpoint}}"
-							},
-							"response": []
-						},
 						{
 							"name": "UpdateDietician_PositiveandNegativeSceanrios",
 							"event": [
