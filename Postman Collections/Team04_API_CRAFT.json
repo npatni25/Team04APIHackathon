@@ -1682,13 +1682,113 @@
 				},
 				{
 					"name": "Add Report for existing patient negative scenario",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "47465816-5308-48a1-ae14-48929d6411b1",
+								"exec": [
+									"const reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const myRequestName = \"UpdatePatient report BypatientIdDiatecian\"; \r",
+									"\r",
+									"\r",
+									"// if (pm.info.requestName !== pm.iterationData.get(\"Reqname\")) {\r",
+									"//     console.log(`Skipping this request. Not matched.`);\r",
+									"//     postman.setNextRequest(null);\r",
+									"// }\r",
+									"\r",
+									"// console.log(` Running Request: ${pm.info.requestName}`);\r",
+									"// console.log(` Target from JSON: ${pm.iterationData.get(\"Reqname\")}`);\r",
+									"\r",
+									"    let endpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+									"    pm.variables.set(\"endpoint\", endpoint);  // makes {{endpoint}} available in URL\r",
+									"\r",
+									"\r",
+									"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
+									"if (method) pm.request.method = method.toUpperCase();\r",
+									"\r",
+									"\r",
+									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
+									"\r",
+									"\r",
+									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
+									"\r",
+									"if (authType === \"Dietician Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Admin Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Expired Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+									"    });\r",
+									"} else if (authType === \"No Auth\") {\r",
+									"    pm.request.headers.remove(\"Authorization\");\r",
+									"}\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"// let patientId = pm.iterationData.get(\"patientId\");\r",
+									"// pm.variables.set(\"patientId\", patientId);\r",
+									"    // pm.environment.set('patientId', json.patientId);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// //  Status code check\r",
+									"// pm.test(\"Status code is 201\", function () {\r",
+									"//     pm.response.to.have.status(200);\r",
+									"// });\r",
+									"\r",
+									"// // Generate random Contact Number starting with 2\r",
+									"// const contactNumber = \"2\" + Math.floor(100000000 + Math.random() * 900000000);\r",
+									"// pm.environment.set(\"PatientContactNumber\", contactNumber);\r",
+									"\r",
+									"// // Generate unique email\r",
+									"// const emailPrefix = \"jane\" + Math.floor(Math.random() * 10000);\r",
+									"// pm.environment.set(\"PatientEmail\", `${emailPrefix}@example.com`);\r",
+									"\r",
+									"// // Generate random DOB between 1985 and 2002\r",
+									"// function getRandomDOB() {\r",
+									"//     const start = new Date(1985, 0, 1);\r",
+									"//     const end = new Date(2002, 11, 31);\r",
+									"//     const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));\r",
+									"//     return dob.toISOString().split('T')[0];\r",
+									"// }\r",
+									"// pm.environment.set(\"PatientDOB\", getRandomDOB());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"id": "151047f8-c68b-49a1-9228-c096d7ee2890",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{dieticianToken}}"
+							}
+						},
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
