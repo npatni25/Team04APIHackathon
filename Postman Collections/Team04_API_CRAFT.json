@@ -401,10 +401,10 @@
 											"//const reqName = pm.iterationData.get(\"requestName\");",
 											"const testCase = pm.iterationData.get(\"TestCase\");",
 											"",
-											"// if (testCase !== \"TC23\" ) {",
-											"//     console.log(`Skipping iteration with name: ${testCase}`);",
-											"//     Postman.setNextRequest(null)",
-											"// }"
+											"if (testCase !== \"TC23\" ) {",
+											"    console.log(`Skipping iteration with name: ${testCase}`);",
+											"    Postman.setNextRequest(null)",
+											"}"
 										],
 										"type": "text/javascript",
 										"packages": {}
