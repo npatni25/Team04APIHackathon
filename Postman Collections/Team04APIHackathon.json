@@ -2867,6 +2867,58 @@
 								"type": "text/javascript",
 								"packages": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6c03ff93-8700-45fd-b2f4-79c14c706b57",
+								"exec": [
+									"const reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const myRequestName = \"DeleteDieticianByID\"; \r",
+									"\r",
+									"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
+									"\r",
+									" \r",
+									"let method = pm.iterationData.get(\"method\"); // Set HTTP method dynamically\r",
+									"if (method) pm.request.method = method.toUpperCase();\r",
+									"\r",
+									"\r",
+									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Get and substitute dynamic endpoint from JSON data\r",
+									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\"); // clean leading slashes\r",
+									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+									"\r",
+									"\r",
+									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Handle Authorization by role using collection variables\r",
+									"\r",
+									"if (authType === \"Dietician Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Admin Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+									"    });\r",
+									"} else if (authType === \"Expired Token\") {\r",
+									"    pm.request.headers.upsert({\r",
+									"        key: \"Authorization\",\r",
+									"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+									"    });\r",
+									"} else if (authType === \"No Auth\") {\r",
+									"    pm.request.headers.remove(\"Authorization\");\r",
+									"}\r",
+									"\r",
+									"\r",
+									"console.log(\"Scenario:\", pm.iterationData.get(\"scenario\")); // Log for debugging\r",
+									"console.log(\"Method:\", method);\r",
+									"console.log(\"Auth Type:\", authType);\r",
+									"console.log(\"Final Endpoint:\", substitutedEndpoint);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
 					],
 					"id": "f05a5786-f372-4dfb-9dd6-be3206f9108c",
@@ -3215,15 +3267,15 @@
 			"value": ""
 		},
 		{
-			"key": "ContactNumber1",
+			"key": "ContactNumber",
 			"value": ""
 		},
 		{
-			"key": "Email1",
+			"key": "Email",
 			"value": ""
 		},
 		{
-			"key": "DateOfBirth1",
+			"key": "DateOfBirth",
 			"value": ""
 		}
 	]
