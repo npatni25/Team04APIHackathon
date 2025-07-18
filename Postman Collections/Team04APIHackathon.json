@@ -1362,13 +1362,101 @@
 								},
 								{
 									"name": "Get Dietician by id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "ffccab65-d437-4f28-9efc-8ba595523c7c",
+												"exec": [
+													"const reqname = pm.iterationData.get(\"Reqname\");\r",
+													"const myRequestName = \"Get Dietician by id\"; \r",
+													"\r",
+													"\r",
+													"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
+													"\r",
+													"\r",
+													"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
+													"if (method) pm.request.method = method.toUpperCase();\r",
+													"\r",
+													"\r",
+													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
+													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+													"\r",
+													"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
+													"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+													"\r",
+													"\r",
+													"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
+													"\r",
+													"if (authType === \"Dietician Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+													"    });\r",
+													"} else if (authType === \"Admin Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+													"    });\r",
+													"} else if (authType === \"Expired Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+													"    });\r",
+													"} else if (authType === \"No Auth\") {\r",
+													"    pm.request.headers.remove(\"Authorization\");\r",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "beb715ce-d4df-4620-860a-8bfe72a13e1f",
+												"exec": [
+													"const expectedStatus = parseInt(pm.iterationData.get(\"statusCode\"));\r",
+													"const expectedStatusText = pm.iterationData.get(\"statusText\");\r",
+													"\r",
+													"pm.test(\" Status Code matches\", function () {\r",
+													"    pm.response.to.have.status(expectedStatus);\r",
+													"});\r",
+													"\r",
+													"pm.test(\" Status Text matches\", function () {\r",
+													"    pm.expect(pm.response.status).to.eql(expectedStatusText);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
 									"id": "d7433045-9cc4-42a4-a404-ae6c26aefa36",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
+										"auth": {
+											"type": "noauth"
+										},
 										"method": "GET",
-										"header": []
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{adminToken}}"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": "{{base_url}}{{dynamicEndpoint}}"
 									},
 									"response": []
 								}
