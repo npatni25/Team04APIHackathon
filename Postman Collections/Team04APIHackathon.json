@@ -168,122 +168,6 @@
 					"name": "CreateDietician",
 					"item": [
 						{
-							"name": "CreateDietician",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "b330486b-6618-4a11-ac4e-80628727f726",
-										"exec": [
-											"// Read scenario name from the current iteration data",
-											"const testCaseId = pm.iterationData.get(\"TestCase\");",
-											"const testCaseName = pm.iterationData.get(\"Name\");",
-											"console.log(`Running Test Case: ${testCaseId} - ${testCaseName}`);",
-											"pm.test(`Executed: ${testCaseId} - ${testCaseName}`, function () {",
-											"    pm.expect(testCaseId).to.not.be.undefined;",
-											"});",
-											"",
-											"//Check if status code is as expected",
-											"pm.test(\"Status code is as expected\", function () {",
-											"    const expectedCode = parseInt(pm.iterationData.get(\"statusCode\"));",
-											"    pm.response.to.have.status(expectedCode);",
-											"});",
-											"",
-											"// Check that 'id' exists and is not null",
-											"pm.test(\"Response has auto-generated ID\", function () {",
-											"    const jsonData = pm.response.json(); ",
-											"    pm.expect(jsonData).to.have.property('id');",
-											"    pm.expect(jsonData.id).to.not.be.null;",
-											"    pm.expect(jsonData.id).to.not.be.undefined;",
-											"    pm.expect(jsonData.id).to.satisfy(id => typeof id === 'string' || typeof id === 'number');",
-											"    console.log(\"Generated ID:\", jsonData.id);",
-											"});",
-											"",
-											"pm.test(\"Response has auto-generated Password\", function () {",
-											"    const jsonData = pm.response.json(); ",
-											"    pm.expect(jsonData).to.have.property('loginPassword');",
-											"    pm.expect(jsonData.loginPassword).to.not.be.null;",
-											"    pm.expect(jsonData.loginPassword).to.not.be.undefined;",
-											"    //pm.expect(jsonData.loginPassword).to.satisfy(loginPassword => typeof loginPassword === 'string' || typeof loginPassword === 'number');",
-											"    console.log(\"Generated Password:\", jsonData.loginPassword);",
-											"});",
-											"",
-											"",
-											"",
-											"",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "f643f754-9a81-4b40-a4c8-51056ba92641",
-										"exec": [
-											"const reqName = pm.iterationData.get(\"requestName\");",
-											"const testCase = pm.iterationData.get(\"TestCase\");",
-											"console.log(\"requestNamelog:\" + reqName);",
-											"console.log(\"testCaselog:\" + testCase);",
-											"",
-											"",
-											"",
-											"// if (testCase !== \"TC14\" ) {",
-											"//     console.log(`Skipping iteration with name: ${testCase}`);",
-											"//     pm.execution.setNextRequest(\"Skip\");",
-											"//     //pm.execution.setNextRequest(null);",
-											"//     throw new Error(\"Skipping this request for current iteration since its not a CreateDietician test\");",
-											"// }",
-											"",
-											"// const currentRequestName = pm.info.requestName;",
-											"// const dataRequestName = pm.iterationData.get(\"requestName\");",
-											"",
-											"// // If the current request doesn't match the row's target request, skip it.",
-											"// if (currentRequestName !== dataRequestName) {",
-											"//     console.log(`Skipping: ${currentRequestName} is not meant for this data row (${dataRequestName})`);",
-											"//     pm.execution.setNextRequest(null); // Skip just this request, not the whole collection",
-											"// }",
-											"",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"id": "c6c8fae1-7313-434e-881f-5777daaee255",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": {
-										"token": "{{adminToken}}"
-									}
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer{{adminToken1}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
-								},
-								"url": "{{base_url}}/dietician"
-							},
-							"response": []
-						},
-						{
 							"name": "CreateDieticianAll",
 							"event": [
 								{
@@ -3141,14 +3025,15 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Admin Logout",
 					"id": "8aea7047-20b5-4f2e-b0a5-b0ac922e5ab8",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": "{{base_url}}/logoutdietician"
 					},
 					"response": []
 				}
