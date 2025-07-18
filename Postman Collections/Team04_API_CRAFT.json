@@ -39,25 +39,8 @@
 							"script": {
 								"id": "8f74a299-23dc-4b78-b6dc-8cf921c3c9ec",
 								"exec": [
-									"// Generate random 10-digit Contact Number\r",
-									"const randomContact = \"1\" + Math.floor(100000000 + Math.random() * 900000000);\r",
-									"pm.collectionVariables.set(\"ContactNumber1\", randomContact);\r",
-									"\r",
-									"// Generate random email\r",
-									"const emailPrefix = \"dietician\" + Math.floor(Math.random() * 10000);\r",
-									"pm.collectionVariables.set(\"Email1\", emailPrefix + \"@example.com\");\r",
-									"\r",
-									"// Generate random DOB between 1980 and 1995\r",
-									"function getRandomDOB() {\r",
-									"    const start = new Date(1980, 0, 1);\r",
-									"    const end = new Date(1995, 11, 31);\r",
-									"    const dob = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));\r",
-									"    return dob.toISOString();\r",
-									"}\r",
-									"pm.collectionVariables.set(\"DateOfBirth1\", getRandomDOB());\r",
-									"\r",
-									"\r",
-									"//////\r",
+									"// Generate random 6-character string\r",
+									"let randomStr = Math.random().toString(36).substring(2, 8).toLowerCase();\r",
 									"\r",
 									"// Generate random email\r",
 									"let email = `user_${randomStr}@mail.com`;\r",
@@ -4260,18 +4243,6 @@
 			"type": "string"
 		},
 		{
-			"key": "ContactNumber1",
-			"value": ""
-		},
-		{
-			"key": "Email1",
-			"value": ""
-		},
-		{
-			"key": "DateOfBirth1",
-			"value": ""
-		},
-		{
 			"key": "dieticianToken",
 			"value": ""
 		},
@@ -4305,6 +4276,18 @@
 		},
 		{
 			"key": "PatientDOB",
+			"value": ""
+		},
+		{
+			"key": "ContactNumber",
+			"value": ""
+		},
+		{
+			"key": "Email",
+			"value": ""
+		},
+		{
+			"key": "DateOfBirth",
 			"value": ""
 		}
 	]
