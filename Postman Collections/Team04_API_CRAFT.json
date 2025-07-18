@@ -25,7 +25,6 @@
 									"",
 									"console.log('Dietician created. Email: ' + json.Email + ', Password: ' + json.loginPassword + ', dieticianId: ' + json.id);",
 									"",
-									"// ✅ Status code check",
 									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
 									"});"
@@ -390,6 +389,26 @@
 						},
 						{
 							"name": "New Request",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "261c706b-63e8-425f-b9d8-78b375709a41",
+										"exec": [
+											"var json = pm.response.json();\r",
+											"\r",
+											"pm.collectionVariables.set('id', json.Dieticianid);\r",
+											"\r",
+											"\r",
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"id": "329ed50f-99f2-4e60-8409-0fb531649bc8",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3296,6 +3315,10 @@
 		},
 		{
 			"key": "DateOfBirth1",
+			"value": ""
+		},
+		{
+			"key": "id",
 			"value": ""
 		}
 	]
