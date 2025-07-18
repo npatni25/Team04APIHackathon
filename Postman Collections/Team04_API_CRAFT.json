@@ -289,8 +289,10 @@
 									"script": {
 										"id": "8784b4c1-ea82-4c25-a307-3f5306a8c97b",
 										"exec": [
-											"//const reqName = pm.iterationData.get(\"requestName\");",
+											"const reqName = pm.iterationData.get(\"requestName\");",
 											"const testCase = pm.iterationData.get(\"TestCase\");",
+											"",
+											"pm.variables.set(\"shouldRun\", reqname === myRequestName);",
 											"",
 											"// if (testCase !== \"TC23\" ) {",
 											"//     console.log(`Skipping iteration with name: ${testCase}`);",
