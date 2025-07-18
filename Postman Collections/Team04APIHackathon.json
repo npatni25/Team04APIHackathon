@@ -825,7 +825,7 @@
 							"name": "GetDieticianUsingAdminRole",
 							"item": [
 								{
-									"name": "Get Dietician by id",
+									"name": "Get Dietician using Admin Role",
 									"event": [
 										{
 											"listen": "prerequest",
