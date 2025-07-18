@@ -181,7 +181,7 @@
 											"// pm.variables.set(\"shouldRun\", reqname === myRequestName);",
 											"",
 											"",
-											"if (reqName !== \"CreateDietician\") {",
+											"if (reqname !== \"CreateDietician\") {",
 											"    console.log(`Skipping iteration with name: ${reqName}`);",
 											"    Postman.setNextRequest(null)",
 											"}"
@@ -277,7 +277,7 @@
 									"mode": "raw",
 									"raw": "{\n  \"ContactNumber\": \"{{ContactNumber}}\",\n  \"DateOfBirth\": \"{{DateOfBirth}}\",\n  \"Education\": \"{{Education}}\",\n  \"Email\": \"{{Email}}\",\n  \"Firstname\": \"{{Firstname}}\",\n  \"HospitalCity\": \"{{HospitalCity}}\",\n  \"HospitalName\": \"{{HospitalName}}\",\n  \"HospitalPincode\": \"{{HospitalPincode}}\",\n  \"HospitalStreet\": \"{{HospitalStreet}}\",\n  \"Lastname\": \"{{Lastname}}\"\n}"
 								},
-								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician"
+								"url": "{{base_url}}/dietician"
 							},
 							"response": []
 						},
