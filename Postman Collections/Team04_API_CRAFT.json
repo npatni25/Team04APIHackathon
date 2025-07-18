@@ -156,6 +156,63 @@
 						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/login"
 					},
 					"response": []
+				},
+				{
+					"name": "P1_SP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c6a3d6ce-46f8-47b1-8d79-9a749bf8958a",
+								"exec": [
+									"// let res = pm.response.json();\r",
+									"// pm.environment.set(\"patient_id\", res.patientId);\r",
+									"// pm.environment.set(\"patient_email\", res.Email);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "82ef8969-935b-41cd-ae66-8f1eaecfba96",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkaWV0aWNpYW4yLmFzcWFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTI0NzQxNTgsImV4cCI6MTc1MjUwMjk1OH0.y-3fiDtrlsAsBzF2PaLhJnAZ6ioW4X-L7OERnKP0Zzc2vtFSMq3GcXqEuTeiahBap_HI4PANrm8QlvZXVfWG8A"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "patientInfo",
+									"value": "{\n  \"FirstName\": \"Swathi\",\n  \"LastName\": \"D\",\n  \"ContactNumber\": \"9176543210\",\n  \"Email\": \"Swathy.d@example.com\",\n  \"Allergy\": \"MILK\",\n  \"FoodPreference\": \"Vegetarian\",\n  \"CuisineCategory\": \"South Indian\",\n  \"DateOfBirth\": \"1992-04-15\"\n}",
+									"type": "text",
+									"uuid": "09d885e2-dbaa-4027-a70f-e66719f04b36"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"uuid": "61295f71-eca2-4643-9cd7-02b01ec3489a",
+									"value": null
+								}
+							]
+						},
+						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient"
+					},
+					"response": []
 				}
 			],
 			"id": "d9ade4ce-f9e9-4847-a481-c0d2dd1ca4ec"
