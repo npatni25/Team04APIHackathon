@@ -1091,10 +1091,6 @@
 									"\r",
 									"\r",
 									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
-									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
-									"\r",
-									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
-									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
 									"\r",
 									"\r",
 									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
@@ -1239,12 +1235,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/{{dynamicEndpoint}}",
+							"raw": "{{base_url}}",
 							"host": [
 								"{{base_url}}"
-							],
-							"path": [
-								"{{dynamicEndpoint}}"
 							],
 							"query": [
 								{
