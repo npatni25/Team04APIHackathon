@@ -176,15 +176,15 @@
 										"exec": [
 											"const reqname = pm.iterationData.get(\"requestName\");",
 											"const myRequestName = \"CreateDietician\"; ",
-											"",
+											"pm.variables.set(\"shouldRun\", reqname === myRequestName);",
 											"",
 											"// pm.variables.set(\"shouldRun\", reqname === myRequestName);",
 											"",
 											"",
-											"if (reqname !== \"CreateDietician\") {",
-											"    console.log(`Skipping iteration with name: ${reqName}`);",
-											"    Postman.setNextRequest(null)",
-											"}"
+											"// if (reqname !== \"CreateDietician\") {",
+											"//     console.log(`Skipping iteration with name: ${reqName}`);",
+											"//     Postman.setNextRequest(null)",
+											"// }"
 										],
 										"type": "text/javascript",
 										"packages": {}
