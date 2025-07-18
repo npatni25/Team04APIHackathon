@@ -845,7 +845,7 @@
 								"auth": {
 									"type": "bearer",
 									"bearer": {
-										"token": "{{adminToken1}}"
+										"token": "{{adminToken}}"
 									}
 								},
 								"method": "GET",
