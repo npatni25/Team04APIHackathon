@@ -1833,11 +1833,11 @@
 							"script": {
 								"id": "6eccd932-e265-46fd-861f-5dd736d3ac04",
 								"exec": [
-									"const reqname = pm.iterationData.get(\"Reqname\");\r",
-									"const myRequestName = \"Get Patient Morbidity Details\"; \r",
+									"onst reqname = pm.iterationData.get(\"Reqname\");\r",
+									"const myRequestName = \"GetAllPatientDiatecian\"; \r",
 									"\r",
-									"\r",
-									"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
+									"    let endpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+									"    pm.variables.set(\"endpoint\", endpoint);  // makes {{endpoint}} available in URL\r",
 									"\r",
 									"\r",
 									"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
@@ -1845,10 +1845,6 @@
 									"\r",
 									"\r",
 									"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\"; // Replace collection variables inside the endpoint string\r",
-									"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
-									"\r",
-									"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
-									"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
 									"\r",
 									"\r",
 									"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
@@ -1890,7 +1886,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{base_url}}/{{dynamicEndpoint}}"
+						"url": "{{base_url}}/{{endpoint}}"
 					},
 					"response": []
 				}
