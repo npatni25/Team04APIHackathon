@@ -1359,6 +1359,18 @@
 										"url": "{{base_url}}/dietician/{{dieticianId}}"
 									},
 									"response": []
+								},
+								{
+									"name": "New Request",
+									"id": "d7433045-9cc4-42a4-a404-ae6c26aefa36",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
 								}
 							],
 							"id": "fdf1a354-a585-4ece-9818-f96ed22e5dbb"
