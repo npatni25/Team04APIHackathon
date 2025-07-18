@@ -224,7 +224,7 @@
 											"    console.log(`Skipping iteration with name: ${testCase}`);",
 											"    pm.execution.setNextRequest(\"Skip\");",
 											"    //pm.execution.setNextRequest(null);",
-											"    //throw new Error(\"Skipping this request for current iteration since its not a CreateDietician test\");",
+											"    throw new Error(\"Skipping this request for current iteration since its not a CreateDietician test\");",
 											"}",
 											"",
 											"const currentRequestName = pm.info.requestName;",
@@ -4113,7 +4113,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "caea32c0-ed14-4d1e-a51b-ccb7656ab00f",
+				"id": "307bc08e-233d-4621-b1a9-94f8c141d6d8",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -4173,7 +4173,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "0f238eef-46b7-4bc6-a241-986d095e2407",
+				"id": "9cffb1a4-79e4-4201-9a3f-6e0e75ee61db",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
