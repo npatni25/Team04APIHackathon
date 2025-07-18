@@ -720,7 +720,7 @@
 							"name": "GetDieticianUsingDieticianRole",
 							"item": [
 								{
-									"name": "Get Dietician by id Copy",
+									"name": "Get Dietician using Dietician Token",
 									"event": [
 										{
 											"listen": "prerequest",
