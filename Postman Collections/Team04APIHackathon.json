@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "0236d80b-87af-455d-80e1-b189b61bb212",
-		"name": "Dietician _API_Team4",
+		"name": "Dietician_API_Team4",
 		"description": "Complete automated flow with Admin login, Dietician creation/login, Patient creation, Reports upload, and test cases.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
