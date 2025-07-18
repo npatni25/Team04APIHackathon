@@ -1080,7 +1080,7 @@
 								"id": "e4147433-9539-46cf-8387-0bb568b31842",
 								"exec": [
 									"const reqname = pm.iterationData.get(\"Reqname\");\r",
-									"const myRequestName = \"Get Patient Morbidity Details\"; \r",
+									"const myRequestName = \"Create New Patient\"; \r",
 									"\r",
 									"\r",
 									"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
