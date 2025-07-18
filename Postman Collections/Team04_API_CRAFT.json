@@ -728,7 +728,7 @@
 												"id": "ffccab65-d437-4f28-9efc-8ba595523c7c",
 												"exec": [
 													"const reqname = pm.iterationData.get(\"Reqname\");\r",
-													"const myRequestName = \"Get Dietician by id\"; \r",
+													"const myRequestName = \"Get Dietician using Dietician Token\"; \r",
 													"\r",
 													"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
 													"\r",
@@ -3575,7 +3575,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "307bc08e-233d-4621-b1a9-94f8c141d6d8",
+				"id": "53b03a7f-a9dd-4c2f-a1b0-d157057443e3",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -3635,7 +3635,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "9cffb1a4-79e4-4201-9a3f-6e0e75ee61db",
+				"id": "dfce0656-2ce2-49e5-bd45-dfc4d0b8a452",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
