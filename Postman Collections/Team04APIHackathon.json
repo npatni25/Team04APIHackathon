@@ -222,7 +222,7 @@
 											"",
 											"if (testCase !== \"TC14\" ) {",
 											"    console.log(`Skipping iteration with name: ${testCase}`);",
-											"    Postman.setNextRequest(null)",
+											"    pm.execution.setNextRequest(null);",
 											"}",
 											"",
 											"const currentRequestName = pm.info.requestName;",
