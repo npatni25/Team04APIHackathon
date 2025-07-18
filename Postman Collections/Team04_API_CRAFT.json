@@ -229,21 +229,21 @@
 											"",
 											"",
 											"",
-											"if (testCase !== \"TC14\" ) {",
-											"    console.log(`Skipping iteration with name: ${testCase}`);",
-											"    pm.execution.setNextRequest(\"Skip\");",
-											"    //pm.execution.setNextRequest(null);",
-											"    throw new Error(\"Skipping this request for current iteration since its not a CreateDietician test\");",
-											"}",
+											"// if (testCase !== \"TC14\" ) {",
+											"//     console.log(`Skipping iteration with name: ${testCase}`);",
+											"//     pm.execution.setNextRequest(\"Skip\");",
+											"//     //pm.execution.setNextRequest(null);",
+											"//     throw new Error(\"Skipping this request for current iteration since its not a CreateDietician test\");",
+											"// }",
 											"",
-											"const currentRequestName = pm.info.requestName;",
-											"const dataRequestName = pm.iterationData.get(\"requestName\");",
+											"// const currentRequestName = pm.info.requestName;",
+											"// const dataRequestName = pm.iterationData.get(\"requestName\");",
 											"",
-											"// If the current request doesn't match the row's target request, skip it.",
-											"if (currentRequestName !== dataRequestName) {",
-											"    console.log(`Skipping: ${currentRequestName} is not meant for this data row (${dataRequestName})`);",
-											"    pm.execution.setNextRequest(null); // Skip just this request, not the whole collection",
-											"}",
+											"// // If the current request doesn't match the row's target request, skip it.",
+											"// if (currentRequestName !== dataRequestName) {",
+											"//     console.log(`Skipping: ${currentRequestName} is not meant for this data row (${dataRequestName})`);",
+											"//     pm.execution.setNextRequest(null); // Skip just this request, not the whole collection",
+											"// }",
 											"",
 											""
 										],
@@ -293,10 +293,10 @@
 										"exec": [
 											"const reqName = pm.iterationData.get(\"requestName\");",
 											"",
-											"if (reqName !== \"CreateDietician\") {",
-											"    console.log(`Skipping iteration with name: ${reqName}`);",
-											"    Postman.setNextRequest(null)",
-											"}"
+											"// if (reqName !== \"CreateDietician\") {",
+											"//     console.log(`Skipping iteration with name: ${reqName}`);",
+											"//     Postman.setNextRequest(null)",
+											"// }"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -401,10 +401,10 @@
 											"//const reqName = pm.iterationData.get(\"requestName\");",
 											"const testCase = pm.iterationData.get(\"TestCase\");",
 											"",
-											"if (testCase !== \"TC23\" ) {",
-											"    console.log(`Skipping iteration with name: ${testCase}`);",
-											"    Postman.setNextRequest(null)",
-											"}"
+											"// if (testCase !== \"TC23\" ) {",
+											"//     console.log(`Skipping iteration with name: ${testCase}`);",
+											"//     Postman.setNextRequest(null)",
+											"// }"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -562,10 +562,10 @@
 											"//const reqName = pm.iterationData.get(\"requestName\");",
 											"const testCase = pm.iterationData.get(\"TestCase\");",
 											"",
-											"if (testCase !== \"TC46\" ) {",
-											"    console.log(`Skipping iteration with name: ${testCase}`);",
-											"    Postman.setNextRequest(null)",
-											"}"
+											"// if (testCase !== \"TC46\" ) {",
+											"//     console.log(`Skipping iteration with name: ${testCase}`);",
+											"//     Postman.setNextRequest(null)",
+											"// }"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -673,10 +673,10 @@
 										"exec": [
 											"const reqName = pm.iterationData.get(\"requestName\");",
 											"",
-											"if (reqName !== \"UpdateDietician\") {",
-											"    console.log(`Skipping iteration with name: ${reqName}`);",
-											"    Postman.setNextRequest(null)",
-											"}"
+											"// if (reqName !== \"UpdateDietician\") {",
+											"//     console.log(`Skipping iteration with name: ${reqName}`);",
+											"//     Postman.setNextRequest(null)",
+											"// }"
 										],
 										"type": "text/javascript",
 										"packages": {}
