@@ -1394,6 +1394,7 @@
 													"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
 													"    });\r",
 													"} else if (authType === \"Admin Token\") {\r",
+													"    console.log(\"Updating the Admin token ---- \" + pm.collectionVariables.get(\"adminToken\"));\r",
 													"    pm.request.headers.upsert({\r",
 													"        key: \"Authorization\",\r",
 													"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
