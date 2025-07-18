@@ -222,8 +222,9 @@
 											"",
 											"if (testCase !== \"TC14\" ) {",
 											"    console.log(`Skipping iteration with name: ${testCase}`);",
-											"    pm.execution.setNextRequest(null);",
-											"    throw new Error(\"Skipping this request for current iteration since its not a CreateDietician test\");",
+											"    pm.execution.setNextRequest(\"Skip\");",
+											"    //pm.execution.setNextRequest(null);",
+											"    //throw new Error(\"Skipping this request for current iteration since its not a CreateDietician test\");",
 											"}",
 											"",
 											"const currentRequestName = pm.info.requestName;",
@@ -1372,9 +1373,7 @@
 													"const reqname = pm.iterationData.get(\"Reqname\");\r",
 													"const myRequestName = \"Get Dietician by id\"; \r",
 													"\r",
-													"\r",
 													"pm.variables.set(\"shouldRun\", reqname === myRequestName); // Mark whether this request should execute\r",
-													"\r",
 													"\r",
 													"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
 													"if (method) pm.request.method = method.toUpperCase();\r",
@@ -4074,6 +4073,40 @@
 				}
 			],
 			"id": "1cc4e5b6-68de-4bd4-b355-4c8deb1e1a5c"
+		},
+		{
+			"name": "Skip",
+			"item": [
+				{
+					"name": "Skip",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "dae7c71f-3fd8-4d1d-b122-541eb4f0ac02",
+								"exec": [
+									"// Do nothing, this is just a skip handler\r",
+									"console.log(\"Skipped this iteration for irrelevant data.\");\r",
+									"pm.execution.setNextRequest(null);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "97694354-59e8-4248-bc0f-a9088b15107c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://postman-echo.com/get"
+					},
+					"response": []
+				}
+			],
+			"id": "cde3bbe3-1a74-41c0-96fa-6331d42c3ddb"
 		}
 	],
 	"event": [
