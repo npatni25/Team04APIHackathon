@@ -1446,10 +1446,10 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "Bearer {{admin_token}}"
+												"value": "Bearer {{adminToken}}"
 											},
 											{
-												"key": "Accept",
+												"key": "Content-Type",
 												"value": "application/json",
 												"type": "text"
 											}
