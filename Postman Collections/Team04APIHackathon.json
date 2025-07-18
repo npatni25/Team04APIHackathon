@@ -865,59 +865,6 @@
 			"name": "Patient Module",
 			"item": [
 				{
-					"name": "Create Patient",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "f9f5c2a5-6bed-47d6-be33-6b1ba171be56",
-								"exec": [
-									"// Assuming patientId comes in response",
-									"var json = pm.response.json();",
-									"if (json.patientId) {",
-									"    pm.environment.set('patientId', json.patientId);",
-									"    console.log('Patient created with ID: ' + json.patientId);",
-									"} else {",
-									"    console.log('Patient ID not found in response');",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"id": "5e8b12de-4a9e-4437-b43b-aa4b0bcfbbb1",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{dieticianToken}}"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "patientInfo",
-									"type": "text",
-									"value": "{\n  \"FirstName\": \"Jane\",\n  \"LastName\": \"Smith\",\n  \"ContactNumber\": \"9776543210\",\n  \"Email\": \"janeE.smith@example.com\",\n  \"Allergy\": \"NONE\",\n  \"FoodPreference\": \"Vegetarian\",\n  \"CuisineCategory\": \"Indian\",\n  \"DateOfBirth\": \"1985-02-20\"\n}"
-								},
-								{
-									"key": "file",
-									"type": "file",
-									"value": ""
-								}
-							]
-						},
-						"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/patient"
-					},
-					"response": []
-				},
-				{
 					"name": "Create Patient_bs",
 					"event": [
 						{
@@ -1790,21 +1737,21 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c6122f4a-5f9c-4a18-b29d-e0c009b84e21",
+										"id": "5d78c41e-6a34-464d-b49a-d5292c2b1533",
 										"exec": [
 											"const reqname = pm.iterationData.get(\"Reqname\");\r",
 											"const myRequestName = \"GET_ALL_MORBIDITIES\"; \r",
 											"\r",
-											"if (pm.info.requestName !== pm.iterationData.get(\"Reqname\")) {\r",
-											"    console.log(`Skipping this request. Not matched.`);\r",
-											"    postman.setNextRequest(null);\r",
-											"}\r",
+											"// if (pm.info.requestName !== pm.iterationData.get(\"Reqname\")) {\r",
+											"//     console.log(`Skipping this request. Not matched.`);\r",
+											"//     postman.setNextRequest(null);\r",
+											"// }\r",
 											"\r",
-											"console.log(` Running Request: ${pm.info.requestName}`);\r",
-											"console.log(` Target from JSON: ${pm.iterationData.get(\"Reqname\")}`);\r",
+											"// console.log(` Running Request: ${pm.info.requestName}`);\r",
+											"// console.log(` Target from JSON: ${pm.iterationData.get(\"Reqname\")}`);\r",
 											"\r",
-											"    let endpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
-											"    pm.variables.set(\"endpoint\", endpoint);  // makes {{endpoint}} available in URL\r",
+											"    // let endpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+											"    // pm.variables.set(\"endpoint\", endpoint);  // makes {{endpoint}} available in URL\r",
 											"\r",
 											"\r",
 											"let method = pm.iterationData.get(\"method\"); // Set the HTTP method from data file\r",
@@ -1894,7 +1841,7 @@
 										}
 									}
 								},
-								"url": "{{base_url}}/{{endpoint}}"
+								"url": "{{base_url}}/morbidity"
 							},
 							"response": []
 						},
