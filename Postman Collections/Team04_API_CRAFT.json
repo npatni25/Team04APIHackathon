@@ -215,11 +215,15 @@
 										"exec": [
 											"const reqName = pm.iterationData.get(\"requestName\");",
 											"const testCase = pm.iterationData.get(\"TestCase\");",
+											"console.log(\"requestNamelog:\" + reqName);",
+											"console.log(\"testCaselog:\" + reqName);",
 											"",
-											"// if (testCase !== \"TC14\" ) {",
-											"//     console.log(`Skipping iteration with name: ${testCase}`);",
-											"//     Postman.setNextRequest(null)",
-											"// }",
+											"",
+											"",
+											"if (testCase !== \"TC14\" ) {",
+											"    console.log(`Skipping iteration with name: ${testCase}`);",
+											"    Postman.setNextRequest(null)",
+											"}",
 											"",
 											"const currentRequestName = pm.info.requestName;",
 											"const dataRequestName = pm.iterationData.get(\"requestName\");",
@@ -1044,6 +1048,104 @@
 										}
 									],
 									"id": "22b1f966-0716-49fd-905b-e9bbbad9563d",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{admin_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}/dietician/{{dieticianId}}"
+									},
+									"response": []
+								},
+								{
+									"name": "TC01_DieticianById_ValidToken Copy",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f43cc9b8-3f94-49e3-b21b-4f46eac1b2c7",
+												"exec": [
+													"// Set dietician id variable from Json\r",
+													"let id = pm.iterationData.get(\"dieticianId\");\r",
+													"console.log(\"Processing GET dietician id endpoint using :: \" + id);\r",
+													"\r",
+													"let method = pm.iterationData.get(\"method\");\r",
+													"if (method) pm.request.method = method.toUpperCase();\r",
+													"\r",
+													"let rawEndpoint = pm.iterationData.get(\"endpoint\") || \"/\";\r",
+													"let substitutedEndpoint = pm.variables.replaceIn(rawEndpoint).trim();\r",
+													"\r",
+													"substitutedEndpoint = substitutedEndpoint.replace(/^\\/+/, \"\");\r",
+													"pm.variables.set(\"dynamicEndpoint\", \"/\" + substitutedEndpoint);\r",
+													"\r",
+													"\r",
+													"let authType = pm.iterationData.get(\"authType\") || \"No Auth\"; // Auth token logic using collection variables\r",
+													"\r",
+													"if (authType === \"Dietician Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"dieticianToken\")\r",
+													"    });\r",
+													"} else if (authType === \"Admin Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"adminToken\")\r",
+													"    });\r",
+													"} else if (authType === \"Expired Token\") {\r",
+													"    pm.request.headers.upsert({\r",
+													"        key: \"Authorization\",\r",
+													"        value: \"Bearer \" + pm.collectionVariables.get(\"expiredToken\")\r",
+													"    });\r",
+													"} "
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1130ba88-8de1-46c5-b50a-6d3d000dbfc2",
+												"exec": [
+													"console.log(pm.iterationData.get(\"scenarioName\"));\r",
+													"console.log(\"Expected Status Code :: \" + pm.iterationData.get(\"responseCode\"));\r",
+													"\r",
+													"\r",
+													"pm.test(\"Validate status code\", function () {\r",
+													"    pm.response.to.have.status(pm.iterationData.get(\"responseCode\"));\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Response body matches expected JSON\", function () {\r",
+													"    let responseBody = pm.response.json();\r",
+													"    let expectedResponseBody = pm.iterationData.get(\"expectedResponseBody\");\r",
+													"    if (responseBody.hasOwnProperty(\"timestamp\")){\r",
+													"        responseBody.timestamp = \"\";\r",
+													"    }\r",
+													"    pm.expect(responseBody).to.eql(expectedResponseBody);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"id": "61b90b40-5525-4f5a-b934-1b70b6f4ef24",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
