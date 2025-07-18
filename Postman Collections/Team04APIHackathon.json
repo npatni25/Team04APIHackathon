@@ -391,48 +391,6 @@
 								"url": "{{base_url}}/dietician"
 							},
 							"response": []
-						},
-						{
-							"name": "New Request",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "261c706b-63e8-425f-b9d8-78b375709a41",
-										"exec": [
-											"var json = pm.response.json();\r",
-											"\r",
-											"pm.collectionVariables.set('id', json.Dieticianid);\r",
-											"\r",
-											"\r",
-											"pm.test(\"Status code is 201\", function () {\r",
-											"    pm.response.to.have.status(201);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"id": "329ed50f-99f2-4e60-8409-0fb531649bc8",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "   {\r\n\r\n    \"ContactNumber\": \"1262241190\",\r\n    \"DateOfBirth\": \"1992-02-01T00:00:00.000Z\",\r\n    \"Education\": \"MBBS\",\r\n    \"Email\": \"john12F@example.com\",\r\n    \"Firstname\": \"JohnF\",\r\n    \"HospitalCity\": \"CityName\",\r\n    \"HospitalName\": \"HospitalName\",\r\n    \"HospitalPincode\": \"123456\",\r\n    \"HospitalStreet\": \"StreetName\",\r\n    \"Lastname\": \"SinhaF\",\r\n   }\r\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician"
-							},
-							"response": []
 						}
 					],
 					"id": "3488c536-7744-413b-a8aa-9394b0dcb367"
