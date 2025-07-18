@@ -175,6 +175,13 @@
 									"script": {
 										"id": "8784b4c1-ea82-4c25-a307-3f5306a8c97b",
 										"exec": [
+											"const reqname = pm.iterationData.get(\"requestName\");",
+											"const myRequestName = \"CreateDietician\"; ",
+											"",
+											"",
+											"pm.variables.set(\"shouldRun\", reqname === myRequestName);",
+											"",
+											"",
 											"const reqName = pm.iterationData.get(\"requestName\");",
 											"",
 											"// if (reqName !== \"CreateDietician\") {",
@@ -252,7 +259,10 @@
 							},
 							"request": {
 								"auth": {
-									"type": "noauth"
+									"type": "bearer",
+									"bearer": {
+										"token": "{{adminToken}}"
+									}
 								},
 								"method": "POST",
 								"header": [
