@@ -275,7 +275,7 @@
 							"response": []
 						},
 						{
-							"name": "AuthCheck_NonAdminCheck",
+							"name": "CreateDietician_NoAuth",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2920,7 +2920,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "{{adminToken}}"
+								"token": "{{admintoken}}"
 							}
 						},
 						"method": "DELETE",
