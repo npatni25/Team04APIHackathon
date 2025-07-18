@@ -395,8 +395,18 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   {\r\n\r\n    \"ContactNumber\": \"1262241190\",\r\n    \"DateOfBirth\": \"1992-02-01T00:00:00.000Z\",\r\n    \"Education\": \"MBBS\",\r\n    \"Email\": \"john12F@example.com\",\r\n    \"Firstname\": \"JohnF\",\r\n    \"HospitalCity\": \"CityName\",\r\n    \"HospitalName\": \"HospitalName\",\r\n    \"HospitalPincode\": \"123456\",\r\n    \"HospitalStreet\": \"StreetName\",\r\n    \"Lastname\": \"SinhaF\",\r\n   }\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://dietician-july-api-hackathon-80f2590665cc.herokuapp.com/dietician/dietician"
 							},
 							"response": []
 						}
