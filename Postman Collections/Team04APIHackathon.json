@@ -2518,7 +2518,7 @@
 							"response": [
 								{
 									"id": "441b60bd-36b5-4f4b-9dde-3e5e68ea3ced",
-									"name": "TC_POST_MORB_ADMIN_004_Retrive_all_morbidity_Invalid Method_400_Bad Request",
+									"name": "Invalid Method",
 									"originalRequest": {
 										"method": "POST",
 										"header": [
@@ -4018,18 +4018,6 @@
 		},
 		{
 			"key": "PatientDOB",
-			"value": ""
-		},
-		{
-			"key": "ContactNumber",
-			"value": ""
-		},
-		{
-			"key": "Email",
-			"value": ""
-		},
-		{
-			"key": "DateOfBirth",
 			"value": ""
 		}
 	]
