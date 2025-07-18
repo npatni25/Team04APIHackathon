@@ -1900,7 +1900,7 @@
 					"name": "ADMIN role",
 					"item": [
 						{
-							"name": "TC_GET_MORB_ADMIN_001_Retrive_all_morbidity_valid bearer token_200_OK",
+							"name": "GET all Morbidity",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2006,7 +2006,7 @@
 							"response": []
 						},
 						{
-							"name": "TC_GET_MORB_ADMIN_006_Retrive_all_morbidity_valid_test name_200_OK",
+							"name": "GET all Morbidity test name",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2760,7 +2760,7 @@
 					"name": "Dietcian role",
 					"item": [
 						{
-							"name": "TC_GET_MORB_DIET_001_GET _all morbidity_valid bearer token_200_OK",
+							"name": "GET all Morbidity",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -2857,7 +2857,7 @@
 							"response": []
 						},
 						{
-							"name": "TC_GET_MORB_DIET_006_Retrieve morbidity with valid test name_200_OK",
+							"name": "GET all Morbidity test name",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -3951,6 +3951,18 @@
 							}
 						},
 						"url": "{{base_url}}{{dynamicEndpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "8aea7047-20b5-4f2e-b0a5-b0ac922e5ab8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
