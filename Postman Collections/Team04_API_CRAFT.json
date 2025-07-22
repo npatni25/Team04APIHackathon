@@ -179,7 +179,10 @@
 											"",
 											"pm.variables.set(\"shouldRun\", reqname === myRequestName);",
 											"",
-											""
+											"",
+											"//if (pm.iterationData.get(\"scenario\") !== \"Get morbidity with patientId zero\") {",
+											"    //postman.setNextRequest(null); // skip the request",
+											"//}"
 										],
 										"type": "text/javascript",
 										"packages": {}
