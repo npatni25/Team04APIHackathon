@@ -3045,7 +3045,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "53b03a7f-a9dd-4c2f-a1b0-d157057443e3",
+				"id": "d2292312-eaab-4fe4-8d72-630ac85cac34",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -3084,7 +3084,7 @@
 					"\r",
 					"            if (json.token) {\r",
 					"                const token = json.token;\r",
-					"                const expiresInMillis = 60 * 60 * 1000; // ⏰ 1 hour (customize if needed)\r",
+					"                const expiresInMillis = 60 * 60 * 1000; //  1 hour (customize if needed)\r",
 					"\r",
 					"                // Save token and expiry\r",
 					"                pm.environment.set('adminToken', token);\r",
@@ -3105,7 +3105,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "dfce0656-2ce2-49e5-bd45-dfc4d0b8a452",
+				"id": "f9669d1f-30d7-4d51-92ee-deb77e0bffbf",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
