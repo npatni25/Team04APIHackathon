@@ -180,6 +180,18 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "50afb7e9-18cd-4491-aad2-1d6cbfbcf61e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"id": "d9ade4ce-f9e9-4847-a481-c0d2dd1ca4ec"
